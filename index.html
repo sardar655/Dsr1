@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Craveman Field Sales - E Balakrishna</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     @media print {
       body * { visibility: hidden; }
@@ -18,31 +19,6 @@
   </style>
 </head>
 <body class="bg-slate-50 p-3 max-w-md mx-auto text-slate-800 font-sans pb-28">
-
-  <!-- LOGIN SCREEN OVERLAY -->
-  <div id="loginScreen" class="fixed inset-0 bg-[#1b1c6e] z-50 flex items-center justify-center p-4">
-    <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl space-y-4 text-center">
-      <div class="w-16 h-16 mx-auto bg-emerald-100 rounded-full flex items-center justify-center text-2xl shadow-inner">🔐</div>
-      <h2 class="font-black text-lg text-slate-900 uppercase">Craveman Field Login</h2>
-      <p class="text-xs text-slate-500 font-medium">Shaik Enterprises, Adoni</p>
-
-      <div class="space-y-3 pt-2 text-left">
-        <div>
-          <label class="text-[11px] font-bold text-slate-600 uppercase">Salesman ID</label>
-          <input id="loginId" type="text" placeholder="Enter ID (Balakrishna)" class="w-full border p-3 rounded-xl text-xs bg-slate-50 font-semibold mt-1 outline-none focus:ring-2 focus:ring-blue-600">
-        </div>
-        <div>
-          <label class="text-[11px] font-bold text-slate-600 uppercase">Password</label>
-          <input id="loginPass" type="password" placeholder="Enter Password (craveman1234)" class="w-full border p-3 rounded-xl text-xs bg-slate-50 font-semibold mt-1 outline-none focus:ring-2 focus:ring-blue-600">
-        </div>
-      </div>
-
-      <button onclick="handleLogin()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl text-xs shadow-lg active:scale-95 transition mt-2">
-        🚀 Secure Login
-      </button>
-      <div id="loginError" class="text-xs text-rose-600 font-bold hidden">Invalid ID or Password!</div>
-    </div>
-  </div>
 
   <!-- OFFICIAL CRAVEMAN HEADER -->
   <div class="bg-gradient-to-b from-[#1b1c6e] via-[#21237a] to-[#161758] text-white p-4 rounded-3xl shadow-xl mb-4 text-center relative overflow-hidden border border-blue-900/40">
@@ -86,7 +62,7 @@
     </div>
     <div class="mt-3 pt-2 border-t border-white/20 flex justify-between items-center text-[11px] px-1">
       <span class="font-extrabold text-yellow-300 uppercase tracking-wider">Shaik Enterprises</span>
-      <span class="bg-emerald-500/35 border border-emerald-400/40 text-emerald-200 px-2.5 py-0.5 rounded-full font-bold text-[10px]">Adoni Beat DSR</span>
+      <span class="bg-emerald-500/35 border border-emerald-400/40 text-emerald-200 px-2.5 py-0.5 rounded-full font-bold text-[10px]" id="headerBeat">Adoni Beat 1</span>
     </div>
   </div>
 
@@ -97,15 +73,26 @@
         <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
         <span class="text-xs font-black text-slate-700 uppercase tracking-wide">Field Officer Attendance</span>
       </div>
-      <button onclick="playBeep(); openAttendanceCalendar()" class="text-[11px] font-bold text-blue-700 bg-blue-50 px-3 py-1 rounded-lg border border-blue-200 flex items-center gap-1">
-        <span>📅 Attendance Calendar</span>
-      </button>
+      <span id="syncIndicator" class="text-[10px] text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+        <i class="fa-solid fa-cloud"></i> RSM Sync Ready
+      </span>
     </div>
 
     <div class="bg-slate-50 border p-2.5 rounded-xl flex items-center justify-between text-xs">
       <div>
         <div class="text-[10px] text-slate-400 font-bold uppercase">Officer Name</div>
-        <div class="font-black text-blue-900 text-sm" id="officerNameDisplay">E Balakrishna</div>
+        <select id="officerSelect" onchange="changeOfficer()" class="font-black text-blue-900 text-sm bg-transparent outline-none">
+          <option value="E Balakrishna">E Balakrishna</option>
+          <option value="Ramesh">Ramesh</option>
+          <option value="Suresh">Suresh</option>
+          <option value="Venkatesh">Venkatesh</option>
+          <option value="Mohammed">Mohammed</option>
+          <option value="Shiva">Shiva</option>
+          <option value="Kiran">Kiran</option>
+          <option value="Anand">Anand</option>
+          <option value="Raghavendra">Raghavendra</option>
+          <option value="Mahendra">Mahendra</option>
+        </select>
       </div>
       <div class="text-right">
         <div class="text-[10px] text-slate-400 font-bold uppercase">Duty Status</div>
@@ -135,7 +122,7 @@
   <!-- LOCKED CONTAINER -->
   <div id="lockedAppContainer" class="opacity-30 pointer-events-none transition-all duration-300 space-y-4">
 
-    <!-- 2. PERFORMANCE & MONTHLY SALES TARGETS / INCENTIVES -->
+    <!-- 2. PERFORMANCE & TARGETS -->
     <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 space-y-3">
       <div class="flex justify-between items-center border-b pb-2">
         <span class="text-xs font-bold text-slate-500 uppercase tracking-wide">Today's Sales Performance</span>
@@ -161,14 +148,12 @@
         </div>
       </div>
 
-      <!-- SALESMAN MONTHLY TARGET & INCENTIVE SLAB TRACKER -->
+      <!-- Target Bar -->
       <div class="bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200 p-3 rounded-xl space-y-2">
         <div class="flex justify-between items-center">
           <div>
-            <div class="font-black text-indigo-900 text-xs uppercase flex items-center gap-1.5">
-              <span>🎯 Monthly Sales Target Tracker</span>
-            </div>
-            <div class="text-[11px] text-slate-600" id="slabStatusText">Target: ₹2L = ₹1k Bonus</div>
+            <div class="font-black text-indigo-900 text-xs uppercase">🎯 Monthly Sales Target</div>
+            <div class="text-[11px] text-slate-600">Target: ₹2L = ₹1k Bonus</div>
           </div>
           <div class="text-right">
             <div class="text-[10px] text-slate-500 font-bold uppercase">Bonus Earned</div>
@@ -178,34 +163,12 @@
         
         <div>
           <div class="flex justify-between text-[10px] font-bold text-slate-600 mb-1">
-            <span>Monthly Total: ₹<span id="monthlySalesVal">0</span></span>
+            <span>Total: ₹<span id="monthlySalesVal">0</span></span>
             <span id="targetPercent">0%</span>
           </div>
           <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
             <div id="targetProgressBar" class="bg-indigo-600 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
           </div>
-        </div>
-
-        <div class="flex gap-2 pt-1 border-t border-indigo-100">
-          <button onclick="playBeep(); shareMonthlyTargetWhatsApp()" class="w-1/2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-1.5 rounded-lg text-[11px] flex items-center justify-center gap-1">
-            <span>📲 Share Target</span>
-          </button>
-          <button onclick="playBeep(); resetMonthlyTarget()" class="w-1/2 bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-600 font-bold py-1.5 rounded-lg text-[11px] flex items-center justify-center gap-1">
-            <span>🗑️ Reset Total</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Retailer Gift Reward Banner (₹30k Monthly Target) -->
-      <div class="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 p-3 rounded-xl flex justify-between items-center">
-        <div>
-          <div class="font-black text-amber-900 text-xs uppercase">🎁 Outlet Gift Reward (₹30k Target)</div>
-          <div class="text-[11px] text-slate-700 mt-0.5">Reach ₹30,000 monthly sale & win Premium Gift! 🎁</div>
-        </div>
-        <div>
-          <button onclick="playBeep(); openOutletPerformanceModal()" class="bg-amber-600 hover:bg-amber-700 text-white font-bold px-3 py-2 rounded-xl text-xs shadow active:scale-95 transition">
-            View Ranking
-          </button>
         </div>
       </div>
     </div>
@@ -214,7 +177,7 @@
     <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 space-y-3">
       <div class="flex justify-between items-center border-b pb-2">
         <span class="text-xs font-black text-slate-700 uppercase tracking-wide">Outlet & Freezer Audit</span>
-        <button type="button" onclick="playBeep(); openNewOutletModal()" class="text-[11px] font-bold text-blue-600 bg-blue-50 border border-blue-200 px-3 py-1 rounded-lg">
+        <button type="button" onclick="playBeep(); openNewOutletPrompt()" class="text-[11px] font-bold text-blue-600 bg-blue-50 border border-blue-200 px-3 py-1 rounded-lg">
           + Add New Shop
         </button>
       </div>
@@ -231,41 +194,21 @@
         <button type="button" onclick="playBeep(); refreshGPSLocation()" class="text-[10px] font-bold text-blue-700 bg-blue-100 px-2.5 py-1 rounded-lg">Refresh</button>
       </div>
 
-      <input type="hidden" id="shopName">
-      <input type="hidden" id="shopPhone">
-      <input type="hidden" id="beat">
-      <input type="hidden" id="freezerSize">
-
-      <div class="flex gap-2 items-center">
-        <div class="flex-grow">
-          <label class="text-[11px] font-bold text-slate-600 uppercase">Select Saved Outlet</label>
-          <select id="outletDropdown" onchange="playBeep(); onSelectSavedOutlet()" class="w-full border p-2.5 rounded-xl text-xs bg-slate-50 font-semibold mt-1 outline-none">
+      <div>
+        <label class="text-[11px] font-bold text-slate-600 uppercase">Outlet / Shop Name</label>
+        <div class="flex gap-2 mt-1">
+          <select id="outletDropdown" onchange="onSelectSavedOutlet()" class="w-full border p-2.5 rounded-xl text-xs bg-slate-50 font-semibold outline-none">
             <option value="">-- Choose From Saved Outlets --</option>
+            <option value="Balaji General Store">Balaji General Store</option>
+            <option value="Sri Venkateshwara Kirana">Sri Venkateshwara Kirana</option>
+            <option value="Adoni Fresh Point">Adoni Fresh Point</option>
+            <option value="New Royal Bakery">New Royal Bakery</option>
           </select>
         </div>
-        <button type="button" onclick="playBeep(); deleteCurrentOutlet()" class="mt-5 bg-red-50 text-red-600 border border-red-200 px-3.5 py-2.5 rounded-xl text-xs font-bold active:scale-95">
-          🗑️ Delete
-        </button>
       </div>
 
-      <div id="selectedOutletDisplay" class="bg-blue-50 border border-blue-100 p-3 rounded-xl text-xs hidden shadow-sm">
-        <div class="flex justify-between items-center">
-          <div class="font-black text-blue-900 text-sm" id="dispShopName">--</div>
-          <div class="bg-blue-600 text-white font-bold text-[10px] px-2 py-0.5 rounded-full">Monthly Sale: ₹<span id="dispOutletSale">0</span></div>
-        </div>
-        <div class="text-slate-600 text-[11px] mt-1">Phone: <span id="dispPhone">--</span> | Area: <span id="dispBeat">--</span> | Freezer: <span id="dispFreezer">--</span></div>
-      </div>
-
-      <div class="border-2 border-dashed border-cyan-300 rounded-xl p-3 text-center bg-cyan-50/40">
-        <input type="file" id="freezerPhotoInput" accept="image/*" capture="environment" onchange="previewFreezerPhoto(event)" class="hidden">
-        <div id="freezerPlaceholder" onclick="playBeep(); triggerFreezerCamera()" class="cursor-pointer py-1">
-          <div class="w-9 h-9 mx-auto mb-1 rounded-full bg-cyan-100 text-cyan-800 flex items-center justify-center text-base shadow-sm">❄️</div>
-          <p class="text-xs font-bold text-slate-800">Click Deep Freezer Photo</p>
-        </div>
-        <div id="freezerPreviewBox" class="hidden relative inline-block">
-          <img id="freezerImg" src="" alt="Freezer" class="w-24 h-16 object-cover rounded-xl border-2 border-cyan-500 mx-auto shadow">
-          <button onclick="playBeep(); triggerFreezerCamera()" class="absolute -bottom-2 -right-2 bg-cyan-700 text-white text-[9px] px-2 py-0.5 rounded-full font-bold">Retake</button>
-        </div>
+      <div id="manualShopBox" class="mt-2">
+        <input type="text" id="customShopName" placeholder="Or enter manual shop name..." class="w-full border p-2.5 rounded-xl text-xs bg-white outline-none">
       </div>
 
       <div>
@@ -282,6 +225,7 @@
         </div>
       </div>
 
+      <!-- No Order Section -->
       <div id="noOrderReasonBox" class="hidden space-y-2">
         <select id="noOrderReason" class="w-full border p-2.5 rounded-xl text-xs bg-slate-50 font-semibold">
           <option value="Sufficient Stock Available">Sufficient Stock Available</option>
@@ -289,8 +233,9 @@
           <option value="Pending Payment Issue">Pending Payment Issue</option>
           <option value="Owner Not Available">Owner Not Available</option>
         </select>
-        <button type="button" onclick="playBeep(); submitOrder()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-2.5 rounded-xl text-xs shadow">
-          📍 Share Visit Proof to WhatsApp
+        <button type="button" id="btnSyncVisit" onclick="submitVisitOnly()" class="w-full bg-slate-900 hover:bg-slate-800 text-amber-400 font-bold py-3 rounded-xl text-xs shadow flex items-center justify-center gap-2">
+          <i class="fa-solid fa-cloud-arrow-up"></i>
+          <span>Save Visit to RSM Sheet</span>
         </button>
       </div>
     </div>
@@ -298,876 +243,106 @@
     <!-- 4. PRODUCTS CATALOG & BILLING -->
     <div id="orderBookingSection" class="space-y-3">
       <div class="sticky top-2 z-10 space-y-1.5 bg-slate-50 pb-1">
-        <input id="searchInput" type="text" oninput="filterProducts()" placeholder="🔍 Search ice cream flavour or category..." 
+        <input id="searchInput" type="text" oninput="filterProducts()" placeholder="🔍 Search ice cream flavour..." 
           class="w-full p-3 rounded-xl border border-slate-300 shadow-sm text-sm outline-none bg-white font-medium">
-        <select id="categoryFilter" onchange="filterProducts()" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs bg-white font-semibold text-slate-700 outline-none shadow-sm">
-          <option value="">All Categories (154 Items)</option>
-        </select>
       </div>
 
       <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
         <div class="flex justify-between items-center border-b pb-2 mb-2">
           <h2 class="font-bold text-xs text-slate-700 uppercase">Ice Cream Variants (Boxes)</h2>
-          <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full uppercase">Dealer Price (GST Incl.)</span>
+          <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full uppercase">Flat 20% Off Outlet Rate</span>
         </div>
-        <div id="productList" class="space-y-2.5 divide-y divide-slate-100 max-h-96 overflow-y-auto pr-1"></div>
+        <div id="productList" class="space-y-2.5 divide-y divide-slate-100 max-h-80 overflow-y-auto pr-1"></div>
       </div>
 
+      <!-- Bill Calculation -->
       <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 space-y-2.5">
         <div class="flex justify-between items-center text-xs font-bold text-slate-600">
-          <span>Taxable Value (Excl. GST):</span>
+          <span>Taxable Value:</span>
           <span class="text-slate-800">₹ <span id="taxableTotal">0.00</span></span>
         </div>
         <div class="flex justify-between items-center text-xs font-bold text-slate-600">
-          <span>GST Amount (5%):</span>
+          <span>GST (5%):</span>
           <span class="text-slate-800">₹ <span id="gstTotal">0.00</span></span>
         </div>
         <div class="flex justify-between items-center text-sm font-black pt-1.5 border-t">
           <span class="text-slate-900">Total Invoice (Incl. GST):</span>
           <span class="text-blue-700 text-lg">₹ <span id="grandTotal">0.00</span></span>
         </div>
-
-        <div class="grid grid-cols-2 gap-2.5 pt-2 border-t">
-          <div>
-            <label class="text-[11px] font-bold text-slate-600 uppercase">Cash Paid</label>
-            <input id="cashPaid" type="number" value="0" min="0" oninput="calculateBalance()" class="w-full border p-2 rounded-xl mt-0.5 text-sm bg-slate-50 font-bold outline-none">
-          </div>
-          <div>
-            <label class="text-[11px] font-bold text-slate-600 uppercase">UPI Paid</label>
-            <input id="upiPaid" type="number" value="0" min="0" oninput="calculateBalance()" class="w-full border p-2 rounded-xl mt-0.5 text-sm bg-slate-50 font-bold outline-none">
-          </div>
-        </div>
-
-        <div class="flex justify-between items-center text-xs font-semibold pt-1.5 border-t">
-          <span class="text-slate-600">Balance Due:</span>
-          <span class="text-sm font-black text-red-600">₹ <span id="balanceAmount">0.00</span></span>
+        <div class="flex justify-between items-center text-xs font-bold text-slate-600">
+          <span>Total Boxes:</span>
+          <span class="text-purple-700 font-black text-base" id="totalBoxCount">0</span>
         </div>
       </div>
+
+      <!-- ACTION BUTTONS -->
+      <div class="space-y-2 pt-2">
+        <button type="button" id="btnSyncOrder" onclick="submitOrderToSheet()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-3.5 rounded-2xl shadow-lg transition flex items-center justify-center gap-2 text-sm active:scale-95">
+          <i class="fa-solid fa-cloud-arrow-up text-lg"></i>
+          <span>Book & Sync to Live RSM</span>
+        </button>
+
+        <button type="button" onclick="shareToWhatsApp()" class="w-full bg-slate-900 hover:bg-slate-800 text-emerald-400 font-bold py-3 rounded-2xl shadow transition flex items-center justify-center gap-2 text-xs">
+          <i class="fa-brands fa-whatsapp text-base"></i> Share Slip on WhatsApp
+        </button>
+      </div>
+
     </div>
 
-    <!-- SUBMIT & REPORT BUTTONS -->
-    <div class="space-y-2.5 pt-2">
-      <button onclick="playSuccessSound(); submitOrder()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-2xl shadow-lg active:scale-98 transition text-sm flex items-center justify-center gap-2">
-        <span>🧾</span> Submit Order & Generate GST Bill Slip
-      </button>
-      <button onclick="playSuccessSound(); sendDayEndReport()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-2xl shadow-md text-xs uppercase tracking-wider flex items-center justify-center gap-1.5">
-        <span>📊</span> Share Day-End WhatsApp Summary
-      </button>
-    </div>
-
-  </div> <!-- END OF LOCKED CONTAINER -->
-
-  <!-- MODALS -->
-  <div id="billModal" class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-3 overflow-y-auto">
-    <div id="printableSlip" class="bg-white w-full max-w-xs rounded-2xl p-4 shadow-2xl space-y-2 font-mono text-xs my-auto border">
-      <div class="text-center border-b pb-2 border-dashed border-slate-400">
-        <h2 class="font-black text-sm uppercase">CRAVEMAN ICE CREAM</h2>
-        <p class="text-[10px] text-slate-700 uppercase">Shaik Enterprises, Adoni</p>
-      </div>
-      <div class="text-[10px] space-y-0.5 border-b pb-1.5 border-dashed border-slate-300">
-        <div>Bill No : <span id="billSlipNo" class="font-bold">#CRV-101</span></div>
-        <div>Date    : <span id="billSlipDate">--</span></div>
-        <div>Shop    : <span id="billSlipShop" class="font-bold">--</span></div>
-        <div>Phone   : <span id="billSlipPhone">--</span></div>
-        <div>Beat    : <span id="billSlipBeat">--</span></div>
-        <div>Salesman: <span class="font-bold">E Balakrishna</span></div>
-      </div>
-      <div id="billItemsList" class="py-1 border-b border-dashed border-slate-300 space-y-1 text-[10px]"></div>
-      <div class="space-y-1 text-[10px] pt-1 border-b pb-1.5 border-dashed font-semibold">
-        <div class="flex justify-between"><span>Boxes:</span><span id="billSlipBoxes">0</span></div>
-        <div class="flex justify-between"><span>Taxable:</span><span>₹ <span id="billSlipTaxable">0.00</span></span></div>
-        <div class="flex justify-between"><span>GST 5%:</span><span>₹ <span id="billSlipGST">0.00</span></span></div>
-      </div>
-      <div class="flex justify-between text-xs font-black pt-1 border-b pb-2">
-        <span>Net Total:</span><span>₹ <span id="billSlipTotal">0.00</span></span>
-      </div>
-      <div class="space-y-1.5 pt-2 no-print">
-        <button onclick="playBeep(); shareBillToWhatsApp()" class="w-full bg-emerald-600 text-white font-bold py-2.5 rounded-xl text-xs shadow">💬 Share on WhatsApp</button>
-        <button onclick="window.print()" class="w-full bg-blue-700 text-white font-bold py-2.5 rounded-xl text-xs shadow">🖨️ Print / Save PDF</button>
-        <button onclick="playBeep(); closeBillModal()" class="w-full bg-slate-800 text-white font-bold py-1.5 rounded-xl text-[11px]">Close</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="newOutletModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-3">
-    <div class="bg-white w-full max-w-sm rounded-2xl p-4 shadow-2xl space-y-3">
-      <h3 class="font-black text-sm uppercase">Add New Outlet</h3>
-      <input id="regShopName" type="text" placeholder="Shop Name *" class="w-full border p-2.5 rounded-xl text-xs">
-      <input id="regPhone" type="tel" placeholder="Phone Number *" class="w-full border p-2.5 rounded-xl text-xs">
-      <input id="regBeat" type="text" placeholder="Beat / Area *" class="w-full border p-2.5 rounded-xl text-xs">
-      <select id="regFreezer" class="w-full border p-2.5 rounded-xl text-xs bg-slate-50 font-semibold">
-        <option value="No Freezer Needed">No Freezer Needed</option>
-        <option value="350 Litres Chest Freezer">350 Litres</option>
-        <option value="450 Litres Chest Freezer">450 Litres</option>
-        <option value="550 Litres Chest Freezer">550 Litres</option>
-        <option value="1000 Litres Double Door">1000 Litres (Double)</option>
-        <option value="Eutectic Glycol Freezer">Eutectic Freezer</option>
-      </select>
-      <div class="flex gap-2 pt-2">
-        <button onclick="playBeep(); closeNewOutletModal()" class="w-1/3 bg-slate-200 text-slate-700 py-2.5 rounded-xl text-xs font-bold">Cancel</button>
-        <button onclick="playBeep(); saveNewOutlet()" class="w-2/3 bg-blue-600 text-white py-2.5 rounded-xl text-xs font-bold shadow">Save Outlet</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- OUTLET PERFORMANCE & GIFTS MODAL -->
-  <div id="outletPerfModal" class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-3">
-    <div class="bg-white w-full max-w-sm rounded-2xl p-4 shadow-2xl space-y-3 font-sans">
-      <div class="flex justify-between items-center border-b pb-2">
-        <h3 class="font-black text-sm uppercase">🏆 Outlet Performance & Gift Ranking</h3>
-        <button onclick="playBeep(); closeOutletPerformanceModal()" class="text-xs font-bold text-red-600">✕ Close</button>
-      </div>
-
-      <div class="text-[11px] text-slate-600 font-semibold bg-amber-50 p-2 rounded-xl border border-amber-200">
-        🎁 <b>Reward Rule:</b><br>
-        • Target: ₹30,000+ Monthly Sale = <b>Premium Gift Box 🎁</b>
-      </div>
-
-      <div id="outletPerfList" class="space-y-2 max-h-60 overflow-y-auto text-xs"></div>
-
-      <div class="pt-2 border-t">
-        <button onclick="playBeep(); shareOutletPerformanceWhatsApp()" class="w-full bg-emerald-600 text-white font-bold py-2.5 rounded-xl text-xs shadow">📲 Share Outlet Ranking to WhatsApp</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ATTENDANCE CALENDAR MODAL -->
-  <div id="calendarModal" class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-3">
-    <div class="bg-white w-full max-w-sm rounded-2xl p-4 shadow-2xl space-y-3 font-sans">
-      <div class="flex justify-between items-center border-b pb-2">
-        <h3 class="font-black text-sm uppercase">📅 Attendance Calendar Log</h3>
-        <button onclick="playBeep(); closeAttendanceCalendar()" class="text-xs font-bold text-red-600">✕ Close</button>
-      </div>
-
-      <div class="text-center font-bold text-sm text-indigo-900 bg-indigo-50 py-1.5 rounded-xl" id="calMonthYearTitle">September 2026</div>
-
-      <div class="grid grid-cols-7 text-center text-[11px] font-black text-gray-500 uppercase gap-1">
-        <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
-      </div>
-
-      <div id="calendarGrid" class="grid grid-cols-7 gap-1 text-center text-xs"></div>
-
-      <div class="flex justify-around text-[10px] font-bold text-gray-600 pt-1 border-t">
-        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> Present</span>
-        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block"></span> Absent</span>
-        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block"></span> Sunday</span>
-      </div>
-
-      <div class="pt-2 border-t flex gap-2">
-        <button onclick="playBeep(); shareCalendarWhatsApp()" class="w-full bg-emerald-600 text-white font-bold py-2 rounded-xl text-xs shadow">📲 Share Calendar</button>
-        <button onclick="playBeep(); resetCalendarLog()" class="bg-red-50 text-red-600 border border-red-200 font-bold px-3 py-2 rounded-xl text-xs">🗑️ Reset</button>
-      </div>
-    </div>
   </div>
 
   <script>
-    const FIXED_OFFICER_NAME = "E Balakrishna";
+    // SHEETDB API CONFIGURATION
+    const SHEETDB_URL = "https://sheetdb.io/api/v1/pfa3wfno58xy9?sheet=Live_Sales_Log";
 
-    // AUDIO BEEP & SUCCESS SOUND GENERATOR
+    // AUDIO SOUND EFFECTS
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playBeep() {
       try {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
-        osc.type = "sine";
-        osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.1);
-      } catch (e) {}
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.frequency.value = 800; gain.gain.value = 0.05;
+        osc.start(); osc.stop(audioCtx.currentTime + 0.08);
+      } catch(e) {}
     }
-
     function playSuccessSound() {
       try {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const now = audioCtx.currentTime;
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
-        osc.type = "triangle";
-        osc.frequency.setValueAtTime(440, now);
-        osc.frequency.setValueAtTime(554.37, now + 0.1);
-        osc.frequency.setValueAtTime(659.25, now + 0.2);
-        gain.gain.setValueAtTime(0.15, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start(now);
-        osc.stop(now + 0.35);
-      } catch (e) {}
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+        osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1);
+        gain.gain.value = 0.08;
+        osc.start(); osc.stop(audioCtx.currentTime + 0.25);
+      } catch(e) {}
     }
 
-    // LOGIN AUTHENTICATION CHECK
-    function handleLogin() {
-      const id = document.getElementById('loginId').value.trim();
-      const pass = document.getElementById('loginPass').value.trim();
-      const err = document.getElementById('loginError');
+    // PRODUCTS CATALOG (Top Popular Variants)
+    const products = [
+      { id: 1, name: "Vanilla Cup 50ml", mrp: 10, rate: 8, boxUnits: 40 },
+      { id: 2, name: "Strawberry Cup 50ml", mrp: 10, rate: 8, boxUnits: 40 },
+      { id: 3, name: "Chocolate Cup 100ml", mrp: 20, rate: 16, boxUnits: 30 },
+      { id: 4, name: "Butterscotch Cup 100ml", mrp: 25, rate: 20, boxUnits: 30 },
+      { id: 5, name: "Mango Candy 35ml", mrp: 10, rate: 8, boxUnits: 50 },
+      { id: 6, name: "Orange Bar 40ml", mrp: 10, rate: 8, boxUnits: 50 },
+      { id: 7, name: "Choco Bar 60ml", mrp: 20, rate: 16, boxUnits: 30 },
+      { id: 8, name: "Kulfi Stick 50ml", mrp: 20, rate: 16, boxUnits: 30 },
+      { id: 9, name: "Mini Cone Vanilla 40ml", mrp: 15, rate: 12, boxUnits: 30 },
+      { id: 10, name: "Medium Cone Chocolate 70ml", mrp: 35, rate: 28, boxUnits: 20 },
+      { id: 11, name: "Blackcurrant Cone 70ml", mrp: 40, rate: 32, boxUnits: 20 },
+      { id: 12, name: "Cassata Slice 100ml", mrp: 40, rate: 32, boxUnits: 15 },
+      { id: 13, name: "Matka Kulfi 100ml", mrp: 50, rate: 40, boxUnits: 12 },
+      { id: 14, name: "Vanilla Tub 500ml", mrp: 120, rate: 96, boxUnits: 8 },
+      { id: 15, name: "Butterscotch Tub 500ml", mrp: 150, rate: 120, boxUnits: 8 }
+    ];
 
-      if (id === "Balakrishna" && pass === "craveman1234") {
-        playSuccessSound();
-        document.getElementById('loginScreen').classList.add('hidden');
-        localStorage.setItem('craveman_logged_in', 'true');
-      } else {
-        playBeep();
-        err.classList.remove('hidden');
-      }
-    }
+    let orderState = {};
+    let liveGPS = "15.63, 77.27";
+    let dutyActive = false;
 
     window.addEventListener('DOMContentLoaded', () => {
-      if (localStorage.getItem('craveman_logged_in') === 'true') {
-        document.getElementById('loginScreen').classList.add('hidden');
-      }
-    });
-    
-    async function shareViaWebShare(textMsg, base64Image) {
-      if (navigator.share && base64Image) {
-        try {
-          const res = await fetch(base64Image);
-          const blob = await res.blob();
-          const file = new File([blob], "craveman-snap.jpg", { type: "image/jpeg" });
+      renderProducts(products);
+      refreshGPSLocation();
 
-          if (navigator.canShare && navigator.canShare({ files: [file] })) {
-            await navigator.share({
-              title: 'Craveman Field Report',
-              text: textMsg,
-              files: [file]
-            });
-            return;
-          }
-        } catch (e) {
-          console.log("Web Share API fallback:", e);
-        }
-      }
-      window.location.href = "whatsapp://send?text=" + encodeURIComponent(textMsg);
-    }
-
-    const rawCategoriesData = [
-      {"cat": "ICE CREAM CUPS 30 ML", "items": [{"name": "VANILLA 30ML", "pack": "30", "mrp": 6.0, "box_mrp": 180.0, "baseRate": 137.14, "gst": 6.86, "boxRate": 144.0}, {"name": "STRAWBERRY 30ml", "pack": "30", "mrp": 6.0, "box_mrp": 180.0, "baseRate": 137.14, "gst": 6.86, "boxRate": 144.0}, {"name": "BUTTER SCOTCH 30ml", "pack": "30", "mrp": 6.0, "box_mrp": 180.0, "baseRate": 137.14, "gst": 6.86, "boxRate": 144.0}, {"name": "CHOCOLATE 30ml", "pack": "30", "mrp": 6.0, "box_mrp": 180.0, "baseRate": 137.14, "gst": 6.86, "boxRate": 144.0}]},
-      {"cat": "ICE CREAM CUPS 70 ML", "items": [{"name": "VANILLA 70ML", "pack": "24", "mrp": 10.0, "box_mrp": 240.0, "baseRate": 182.86, "gst": 9.14, "boxRate": 192.0}, {"name": "CHOCOLATE 70ml", "pack": "24", "mrp": 10.0, "box_mrp": 240.0, "baseRate": 182.86, "gst": 9.14, "boxRate": 192.0}, {"name": "STRAWBERRY 70ml", "pack": "24", "mrp": 10.0, "box_mrp": 240.0, "baseRate": 182.86, "gst": 9.14, "boxRate": 192.0}, {"name": "BUTTER SCOTCH 70ml", "pack": "24", "mrp": 10.0, "box_mrp": 240.0, "baseRate": 182.86, "gst": 9.14, "boxRate": 192.0}, {"name": "PISTA 70ml", "pack": "24", "mrp": 10.0, "box_mrp": 240.0, "baseRate": 182.86, "gst": 9.14, "boxRate": 192.0}, {"name": "MANGO 70ml", "pack": "24", "mrp": 10.0, "box_mrp": 240.0, "baseRate": 182.86, "gst": 9.14, "boxRate": 192.0}]},
-      {"cat": "ICE CREAM CUPS 100 ML", "items": [{"name": "VANILLA 100ML", "pack": "12", "mrp": 15.0, "box_mrp": 180.0, "baseRate": 137.14, "gst": 6.86, "boxRate": 144.0}, {"name": "CHOCOLATE 100ml", "pack": "12", "mrp": 15.0, "box_mrp": 180.0, "baseRate": 137.14, "gst": 6.86, "boxRate": 144.0}, {"name": "STRAWBERRY 100ml", "pack": "12", "mrp": 15.0, "box_mrp": 180.0, "baseRate": 137.14, "gst": 6.86, "boxRate": 144.0}, {"name": "BUTTER SCOTCH 100ml", "pack": "12", "mrp": 15.0, "box_mrp": 180.0, "baseRate": 137.14, "gst": 6.86, "boxRate": 144.0}, {"name": "PISTA 100ml", "pack": "12", "mrp": 15.0, "box_mrp": 180.0, "baseRate": 137.14, "gst": 6.86, "boxRate": 144.0}, {"name": "MANGO 100ml", "pack": "12", "mrp": 15.0, "box_mrp": 180.0, "baseRate": 137.14, "gst": 6.86, "boxRate": 144.0}]},
-      {"cat": "ICE CREAM BALLS 100 ML", "items": [{"name": "VANILLA 100ML", "pack": "22", "mrp": 15.0, "box_mrp": 330.0, "baseRate": 251.43, "gst": 12.57, "boxRate": 264.0}, {"name": "BUTTER SCOTCH 100ml", "pack": "22", "mrp": 15.0, "box_mrp": 330.0, "baseRate": 251.43, "gst": 12.57, "boxRate": 264.0}, {"name": "MANGO MAGIC 100ML", "pack": "20", "mrp": 15.0, "box_mrp": 300.0, "baseRate": 228.57, "gst": 11.43, "boxRate": 240.0}]},
-      {"cat": "SIP UP 30 ML", "items": [{"name": "MANGO SIP UP 30ML", "pack": "30", "mrp": 5.0, "box_mrp": 150.0, "baseRate": 114.29, "gst": 5.71, "boxRate": 120.0}, {"name": "STRAWBERRY SIP UP 30ML", "pack": "30", "mrp": 5.0, "box_mrp": 150.0, "baseRate": 114.29, "gst": 5.71, "boxRate": 120.0}]},
-      {"cat": "ICE CANDY 35 ML", "items": [{"name": "ORANGE ICE CANDY 35ml", "pack": "40", "mrp": 5.0, "box_mrp": 200.0, "baseRate": 152.38, "gst": 7.62, "boxRate": 160.0}, {"name": "MANGO ICE CANDY 35ml", "pack": "40", "mrp": 5.0, "box_mrp": 200.0, "baseRate": 152.38, "gst": 7.62, "boxRate": 160.0}, {"name": "GRAPE ICE CANDY 35ml", "pack": "40", "mrp": 5.0, "box_mrp": 200.0, "baseRate": 152.38, "gst": 7.62, "boxRate": 160.0}, {"name": "PINEAPPLE ICE CANDY 35ml", "pack": "40", "mrp": 5.0, "box_mrp": 200.0, "baseRate": 152.38, "gst": 7.62, "boxRate": 160.0}]},
-      {"cat": "ICE CANDY 60 ML", "items": [{"name": "MANGO ICE CANDY 60ml", "pack": "30", "mrp": 10.0, "box_mrp": 300.0, "baseRate": 228.57, "gst": 11.43, "boxRate": 240.0}, {"name": "ORANGE ICE CANDY 60ml", "pack": "30", "mrp": 10.0, "box_mrp": 300.0, "baseRate": 228.57, "gst": 11.43, "boxRate": 240.0}, {"name": "STRAWBERRY ICECANDY - 60ml", "pack": "30", "mrp": 10.0, "box_mrp": 300.0, "baseRate": 228.57, "gst": 11.43, "boxRate": 240.0}, {"name": "GRAPE ICECANDY - 60ml", "pack": "30", "mrp": 10.0, "box_mrp": 300.0, "baseRate": 228.57, "gst": 11.43, "boxRate": 240.0}, {"name": "PINEAPPLE ICECANDY - 60ml", "pack": "30", "mrp": 10.0, "box_mrp": 300.0, "baseRate": 228.57, "gst": 11.43, "boxRate": 240.0}, {"name": "JALJEERA ICECANDY - 60ml", "pack": "30", "mrp": 10.0, "box_mrp": 300.0, "baseRate": 228.57, "gst": 11.43, "boxRate": 240.0}, {"name": "LYCHEE ICE CANDY   60ml", "pack": "30", "mrp": 10.0, "box_mrp": 300.0, "baseRate": 228.57, "gst": 11.43, "boxRate": 240.0}, {"name": "GREEN APPLE ICE CANDY 60ml", "pack": "30", "mrp": 10.0, "box_mrp": 300.0, "baseRate": 228.57, "gst": 11.43, "boxRate": 240.0}, {"name": "CHILLI PINK GUAVA ICE CANDY  60ml", "pack": "30", "mrp": 10.0, "box_mrp": 300.0, "baseRate": 228.57, "gst": 11.43, "boxRate": 240.0}, {"name": "BLUE BERRY ICE CANDY  60ml", "pack": "30", "mrp": 10.0, "box_mrp": 300.0, "baseRate": 228.57, "gst": 11.43, "boxRate": 240.0}]},
-      {"cat": "DUET CANDY 60 ML", "items": [{"name": "STRAWBERRY DUET 60ml", "pack": "24", "mrp": 10.0, "box_mrp": 240.0, "baseRate": 182.86, "gst": 9.14, "boxRate": 192.0}, {"name": "MANGO DUET 60ml", "pack": "24", "mrp": 10.0, "box_mrp": 240.0, "baseRate": 182.86, "gst": 9.14, "boxRate": 192.0}]},
-      {"cat": "CHOCOBAR", "items": [{"name": "ORANGE BAR 40ml", "pack": "24", "mrp": 10.0, "box_mrp": 240.0, "baseRate": 182.86, "gst": 9.14, "boxRate": 192.0}, {"name": "MINI CHOCOBAR 40ml", "pack": "24", "mrp": 10.0, "box_mrp": 240.0, "baseRate": 182.86, "gst": 9.14, "boxRate": 192.0}, {"name": "PREMIUM CHOCOBAR 70ml", "pack": "16", "mrp": 20.0, "box_mrp": 320.0, "baseRate": 243.81, "gst": 12.19, "boxRate": 256.0}, {"name": "CHOCOBASH 65ml", "pack": "16", "mrp": 25.0, "box_mrp": 400.0, "baseRate": 304.76, "gst": 15.24, "boxRate": 320.0}]},
-      {"cat": "JUNIOR CONE 40ML", "items": [{"name": "VANILLA CONE 40ml", "pack": "20", "mrp": 10.0, "box_mrp": 200.0, "baseRate": 152.38, "gst": 7.62, "boxRate": 160.0}, {"name": "BUTTER SCOTCH CONE 40ml", "pack": "20", "mrp": 10.0, "box_mrp": 200.0, "baseRate": 152.38, "gst": 7.62, "boxRate": 160.0}]},
-      {"cat": "CONE 60ML", "items": [{"name": "VANILLA CONE 60ml", "pack": "12", "mrp": 20.0, "box_mrp": 240.0, "baseRate": 182.86, "gst": 9.14, "boxRate": 192.0}, {"name": "STRAWBERRY CONE 60ml", "pack": "12", "mrp": 20.0, "box_mrp": 240.0, "baseRate": 182.86, "gst": 9.14, "boxRate": 192.0}, {"name": "PISTA CONE 60ml", "pack": "12", "mrp": 20.0, "box_mrp": 240.0, "baseRate": 182.86, "gst": 9.14, "boxRate": 192.0}, {"name": "CHOCOLATE CONE 60ml", "pack": "12", "mrp": 20.0, "box_mrp": 240.0, "baseRate": 182.86, "gst": 9.14, "boxRate": 192.0}, {"name": "BUTTER SCOTCH CONE 60ml", "pack": "12", "mrp": 20.0, "box_mrp": 240.0, "baseRate": 182.86, "gst": 9.14, "boxRate": 192.0}, {"name": "BLACK CURRANT CONE 60ml", "pack": "12", "mrp": 20.0, "box_mrp": 240.0, "baseRate": 182.86, "gst": 9.14, "boxRate": 192.0}]},
-      {"cat": "CONE 110ML", "items": [{"name": "VANILLA CONE 110ml", "pack": "16", "mrp": 40.0, "box_mrp": 640.0, "baseRate": 487.62, "gst": 24.38, "boxRate": 512.0}, {"name": "STRAWBERRY CONE 110ml", "pack": "16", "mrp": 40.0, "box_mrp": 640.0, "baseRate": 487.62, "gst": 24.38, "boxRate": 512.0}, {"name": "PISTA CONE 110ml", "pack": "16", "mrp": 40.0, "box_mrp": 640.0, "baseRate": 487.62, "gst": 24.38, "boxRate": 512.0}, {"name": "CHOCOLATE CONE 110ml", "pack": "16", "mrp": 40.0, "box_mrp": 640.0, "baseRate": 487.62, "gst": 24.38, "boxRate": 512.0}, {"name": "BUTTER SCOTCH CONE 110ml", "pack": "16", "mrp": 40.0, "box_mrp": 640.0, "baseRate": 487.62, "gst": 24.38, "boxRate": 512.0}, {"name": "BLACK CURRANT CONE 110ml", "pack": "16", "mrp": 40.0, "box_mrp": 640.0, "baseRate": 487.62, "gst": 24.38, "boxRate": 512.0}]},
-      {"cat": "KULFI 60 ML", "items": [{"name": "GULKAND KULFI 60ml", "pack": "16", "mrp": 20.0, "box_mrp": 320.0, "baseRate": 243.81, "gst": 12.19, "boxRate": 256.0}, {"name": "MALAI MASTI 60ml", "pack": "16", "mrp": 20.0, "box_mrp": 320.0, "baseRate": 243.81, "gst": 12.19, "boxRate": 256.0}, {"name": "PISTA KESAR 60ml", "pack": "16", "mrp": 20.0, "box_mrp": 320.0, "baseRate": 243.81, "gst": 12.19, "boxRate": 256.0}, {"name": "CHOCO ALMOND 60ml", "pack": "16", "mrp": 20.0, "box_mrp": 320.0, "baseRate": 243.81, "gst": 12.19, "boxRate": 256.0}, {"name": "MAWA CRUNCH 60ml", "pack": "16", "mrp": 20.0, "box_mrp": 320.0, "baseRate": 243.81, "gst": 12.19, "boxRate": 256.0}, {"name": "MAWA KULFI 60ml", "pack": "16", "mrp": 20.0, "box_mrp": 320.0, "baseRate": 243.81, "gst": 12.19, "boxRate": 256.0}]},
-      {"cat": "PREMIUM MATKA KULFI 100ML", "items": [{"name": "PREMIUM MATKA KULFI 100ml", "pack": "12", "mrp": 50.0, "box_mrp": 600.0, "baseRate": 457.14, "gst": 22.86, "boxRate": 480.0}]},
-      {"cat": "CASSATA120ML", "items": [{"name": "CASSATA 120ml", "pack": "12", "mrp": 50.0, "box_mrp": 600.0, "baseRate": 457.14, "gst": 22.86, "boxRate": 480.0}]},
-      {"cat": "SUNDAE", "items": [{"name": "SWINGER SUNDAE 100ML", "pack": "12", "mrp": 40.0, "box_mrp": 480.0, "baseRate": 365.71, "gst": 18.29, "boxRate": 384.0}, {"name": "MANGO SUNDAE 100 ML", "pack": "12", "mrp": 40.0, "box_mrp": 480.0, "baseRate": 365.71, "gst": 18.29, "boxRate": 384.0}, {"name": "STRAWBERRY SUNDAE - 100ML", "pack": "12", "mrp": 40.0, "box_mrp": 480.0, "baseRate": 365.71, "gst": 18.29, "boxRate": 384.0}, {"name": "CHOCOLATE SUNDAE- 100ML", "pack": "12", "mrp": 40.0, "box_mrp": 480.0, "baseRate": 365.71, "gst": 18.29, "boxRate": 384.0}, {"name": "AMERICAN SUNDAE 100ML", "pack": "12", "mrp": 40.0, "box_mrp": 480.0, "baseRate": 365.71, "gst": 18.29, "boxRate": 384.0}]},
-      {"cat": "GUDBUD", "items": [{"name": "GUDBUD 180ML", "pack": "12", "mrp": 60.0, "box_mrp": 720.0, "baseRate": 548.57, "gst": 27.43, "boxRate": 576.0}]},
-      {"cat": "FAMILY PACK 700 ML", "items": [{"name": "STRAWBERRY 700ml", "pack": "1+1", "mrp": 260.0, "box_mrp": 260.0, "baseRate": 198.1, "gst": 9.9, "boxRate": 208.0}, {"name": "VANILLA 700ml", "pack": "1+1", "mrp": 260.0, "box_mrp": 260.0, "baseRate": 198.1, "gst": 9.9, "boxRate": 208.0}, {"name": "CHOCOLATE 700ml", "pack": "1+1", "mrp": 260.0, "box_mrp": 260.0, "baseRate": 198.1, "gst": 9.9, "boxRate": 208.0}, {"name": "PLAIN PISTA 700ml", "pack": "1+1", "mrp": 260.0, "box_mrp": 260.0, "baseRate": 198.1, "gst": 9.9, "boxRate": 208.0}, {"name": "PLAIN PINEAPPLE 700ml", "pack": "1+1", "mrp": 260.0, "box_mrp": 260.0, "baseRate": 198.1, "gst": 9.9, "boxRate": 208.0}, {"name": "BUTTER SCOTCH 700ml", "pack": "1+1", "mrp": 260.0, "box_mrp": 260.0, "baseRate": 198.1, "gst": 9.9, "boxRate": 208.0}]},
-      {"cat": "BULK 1.25 litres", "items": [{"name": "STRAWBERRY 1.25 Ltr", "pack": "6", "mrp": 240.0, "box_mrp": 1440.0, "baseRate": 1097.14, "gst": 54.86, "boxRate": 1152.0}, {"name": "VANILLA 1.25 Ltr", "pack": "6", "mrp": 240.0, "box_mrp": 1440.0, "baseRate": 1097.14, "gst": 54.86, "boxRate": 1152.0}, {"name": "CHOCOLATE 1.25 Ltr", "pack": "6", "mrp": 240.0, "box_mrp": 1440.0, "baseRate": 1097.14, "gst": 54.86, "boxRate": 1152.0}, {"name": "PLAIN PISTA 1.25 Ltr", "pack": "6", "mrp": 240.0, "box_mrp": 1440.0, "baseRate": 1097.14, "gst": 54.86, "boxRate": 1152.0}, {"name": "PLAIN PINEAPPLE 1.25 Ltr", "pack": "6", "mrp": 240.0, "box_mrp": 1440.0, "baseRate": 1097.14, "gst": 54.86, "boxRate": 1152.0}]},
-      {"cat": "BULK 4 litres Premium", "items": [{"name": "VANILLA  4 Ltr", "pack": "1", "mrp": 640.0, "box_mrp": 640.0, "baseRate": 487.62, "gst": 24.38, "boxRate": 512.0}, {"name": "STRAWBERRY  4 Ltr", "pack": "1", "mrp": 640.0, "box_mrp": 640.0, "baseRate": 487.62, "gst": 24.38, "boxRate": 512.0}, {"name": "MADAGASCAR VANILLA 4 Ltr", "pack": "1", "mrp": 800.0, "box_mrp": 800.0, "baseRate": 609.52, "gst": 30.48, "boxRate": 640.0}, {"name": "BUTTER SCOTCH  4 Ltr", "pack": "1", "mrp": 800.0, "box_mrp": 800.0, "baseRate": 609.52, "gst": 30.48, "boxRate": 640.0}, {"name": "CHOCOLATE  4 Ltr", "pack": "1", "mrp": 800.0, "box_mrp": 800.0, "baseRate": 609.52, "gst": 30.48, "boxRate": 640.0}, {"name": "MANGO  4 Ltr", "pack": "1", "mrp": 800.0, "box_mrp": 800.0, "baseRate": 609.52, "gst": 30.48, "boxRate": 640.0}, {"name": "PLAIN PINEAPPLE  4 Ltr", "pack": "1", "mrp": 800.0, "box_mrp": 800.0, "baseRate": 609.52, "gst": 30.48, "boxRate": 640.0}, {"name": "PLAIN PISTA  4 Ltr", "pack": "1", "mrp": 800.0, "box_mrp": 800.0, "baseRate": 609.52, "gst": 30.48, "boxRate": 640.0}, {"name": "MELODY 4 Ltr", "pack": "1", "mrp": 800.0, "box_mrp": 800.0, "baseRate": 609.52, "gst": 30.48, "boxRate": 640.0}, {"name": "CHIKKU 4 Ltr", "pack": "1", "mrp": 800.0, "box_mrp": 800.0, "baseRate": 609.52, "gst": 30.48, "boxRate": 640.0}, {"name": "BLACK CURRANT  4 Ltr", "pack": "1", "mrp": 800.0, "box_mrp": 800.0, "baseRate": 609.52, "gst": 30.48, "boxRate": 640.0}, {"name": "COFFEE ICE CREAM  4 Ltr", "pack": "1", "mrp": 800.0, "box_mrp": 800.0, "baseRate": 609.52, "gst": 30.48, "boxRate": 640.0}, {"name": "HAWAIIAN FANTASY  4 Ltr", "pack": "1", "mrp": 1000.0, "box_mrp": 1000.0, "baseRate": 761.9, "gst": 38.1, "boxRate": 800.0}, {"name": "HONEY GULKAND  4 Ltr", "pack": "1", "mrp": 1000.0, "box_mrp": 1000.0, "baseRate": 761.9, "gst": 38.1, "boxRate": 800.0}, {"name": "KAJU KISMIS  4 Ltr", "pack": "1", "mrp": 1000.0, "box_mrp": 1000.0, "baseRate": 761.9, "gst": 38.1, "boxRate": 800.0}, {"name": "PAN BANARAS  4 Ltr", "pack": "1", "mrp": 1000.0, "box_mrp": 1000.0, "baseRate": 761.9, "gst": 38.1, "boxRate": 800.0}, {"name": "VANILLA OREA  4 Ltr", "pack": "1", "mrp": 1000.0, "box_mrp": 1000.0, "baseRate": 761.9, "gst": 38.1, "boxRate": 800.0}, {"name": "ROASTED ALMOND 4 Ltr", "pack": "1", "mrp": 1000.0, "box_mrp": 1000.0, "baseRate": 761.9, "gst": 38.1, "boxRate": 800.0}, {"name": "CLASSIC CHAPPAN BHOG  4 Ltr", "pack": "1", "mrp": 1000.0, "box_mrp": 1000.0, "baseRate": 761.9, "gst": 38.1, "boxRate": 800.0}, {"name": "FRUIT PUNCH  4 Ltr", "pack": "1", "mrp": 1000.0, "box_mrp": 1000.0, "baseRate": 761.9, "gst": 38.1, "boxRate": 800.0}, {"name": "MOCHA ALMOND  4 Ltr", "pack": "1", "mrp": 1000.0, "box_mrp": 1000.0, "baseRate": 761.9, "gst": 38.1, "boxRate": 800.0}, {"name": "SPANISH DELIGHT  4 Ltr", "pack": "1", "mrp": 1000.0, "box_mrp": 1000.0, "baseRate": 761.9, "gst": 38.1, "boxRate": 800.0}, {"name": "FIG O HONEY  4 Ltr", "pack": "1", "mrp": 1000.0, "box_mrp": 1000.0, "baseRate": 761.9, "gst": 38.1, "boxRate": 800.0}, {"name": "SITAPHAL 4 Ltr", "pack": "1", "mrp": 1000.0, "box_mrp": 1000.0, "baseRate": 761.9, "gst": 38.1, "boxRate": 800.0}, {"name": "ANJEER 4 Ltr", "pack": "1", "mrp": 1000.0, "box_mrp": 1000.0, "baseRate": 761.9, "gst": 38.1, "boxRate": 800.0}, {"name": "RED CHILLI GUAVA  4 ltr", "pack": "1", "mrp": 1000.0, "box_mrp": 1000.0, "baseRate": 761.9, "gst": 38.1, "boxRate": 800.0}, {"name": "RED VELVET 4 ltr", "pack": "1", "mrp": 1000.0, "box_mrp": 1000.0, "baseRate": 761.9, "gst": 38.1, "boxRate": 800.0}, {"name": "AMERICAN DRY FRUIT  4 Ltr", "pack": "1", "mrp": 1200.0, "box_mrp": 1200.0, "baseRate": 914.29, "gst": 45.71, "boxRate": 960.0}, {"name": "BAVARIAN CHOCOLATE  4 Ltr", "pack": "1", "mrp": 1200.0, "box_mrp": 1200.0, "baseRate": 914.29, "gst": 45.71, "boxRate": 960.0}, {"name": "NATURAL RICH DRY FRUIT 4 Ltr", "pack": "1", "mrp": 1200.0, "box_mrp": 1200.0, "baseRate": 914.29, "gst": 45.71, "boxRate": 960.0}, {"name": "ARABIAN DELIGHT 4 Ltr", "pack": "1", "mrp": 1200.0, "box_mrp": 1200.0, "baseRate": 914.29, "gst": 45.71, "boxRate": 960.0}, {"name": "NUTTY CARAMEL 4 Ltr", "pack": "1", "mrp": 1200.0, "box_mrp": 1200.0, "baseRate": 914.29, "gst": 45.71, "boxRate": 960.0}, {"name": "BISCOFF CREAM 4 Ltr", "pack": "1", "mrp": 1200.0, "box_mrp": 1200.0, "baseRate": 914.29, "gst": 45.71, "boxRate": 960.0}, {"name": "RAJBHOG  4 Ltr", "pack": "1", "mrp": 1200.0, "box_mrp": 1200.0, "baseRate": 914.29, "gst": 45.71, "boxRate": 960.0}, {"name": "SHAHI TUKDA  4 Ltr", "pack": "1", "mrp": 1200.0, "box_mrp": 1200.0, "baseRate": 914.29, "gst": 45.71, "boxRate": 960.0}, {"name": "KESAR SANGAM  4 Ltr", "pack": "1", "mrp": 1200.0, "box_mrp": 1200.0, "baseRate": 914.29, "gst": 45.71, "boxRate": 960.0}]},
-      {"cat": "BULK 4 litres/ Frozen Dessert (FD)", "items": [{"name": "STRAWBERRY (FD) 4 Ltr", "pack": "1", "mrp": 400.0, "box_mrp": 400.0, "baseRate": 304.76, "gst": 15.24, "boxRate": 320.0}, {"name": "VANILLA (FD) 4 Ltr", "pack": "1", "mrp": 400.0, "box_mrp": 400.0, "baseRate": 304.76, "gst": 15.24, "boxRate": 320.0}, {"name": "MANGO (FD) 4 Ltr", "pack": "1", "mrp": 500.0, "box_mrp": 500.0, "baseRate": 380.95, "gst": 19.05, "boxRate": 400.0}, {"name": "CHOCOLATE (FD) 4 Ltr", "pack": "1", "mrp": 500.0, "box_mrp": 500.0, "baseRate": 380.95, "gst": 19.05, "boxRate": 400.0}, {"name": "BUTTER SCOTCH (FD) 4 Ltr", "pack": "1", "mrp": 500.0, "box_mrp": 500.0, "baseRate": 380.95, "gst": 19.05, "boxRate": 400.0}, {"name": "BLACK CURRANT (FD) 4 Ltr", "pack": "1", "mrp": 500.0, "box_mrp": 500.0, "baseRate": 380.95, "gst": 19.05, "boxRate": 400.0}, {"name": "PISTA  (FD) 4 Ltr", "pack": "1", "mrp": 500.0, "box_mrp": 500.0, "baseRate": 380.95, "gst": 19.05, "boxRate": 400.0}, {"name": "SPANISH DELIGHT (FD) 4 ltr", "pack": "1", "mrp": 600.0, "box_mrp": 600.0, "baseRate": 457.14, "gst": 22.86, "boxRate": 480.0}, {"name": "FIG O HONEY (FD) 4 ltr", "pack": "1", "mrp": 600.0, "box_mrp": 600.0, "baseRate": 457.14, "gst": 22.86, "boxRate": 480.0}, {"name": "RED CHILLI GUAVA  (FD) 4 ltr", "pack": "1", "mrp": 600.0, "box_mrp": 600.0, "baseRate": 457.14, "gst": 22.86, "boxRate": 480.0}, {"name": "BAVARIAN CHOCOLATE (FD) 4 ltr", "pack": "1", "mrp": 600.0, "box_mrp": 600.0, "baseRate": 457.14, "gst": 22.86, "boxRate": 480.0}, {"name": "AMERICAN DRY FRUIT (FD) 4 ltr", "pack": "1", "mrp": 600.0, "box_mrp": 600.0, "baseRate": 457.14, "gst": 22.86, "boxRate": 480.0}]},
-      {"cat": "IML TUB ICE CREAM - 125 ML", "items": [{"name": "BAVERIAN CHOCOLATE - 125 ML", "pack": "12", "mrp": 60.0, "box_mrp": 720.0, "baseRate": 548.57, "gst": 27.43, "boxRate": 576.0}, {"name": "CHIKKU - 125 ML", "pack": "12", "mrp": 60.0, "box_mrp": 720.0, "baseRate": 548.57, "gst": 27.43, "boxRate": 576.0}, {"name": "CARNIVAL ALMOND - 125 ML", "pack": "12", "mrp": 60.0, "box_mrp": 720.0, "baseRate": 548.57, "gst": 27.43, "boxRate": 576.0}, {"name": "KESAR SANGAM - 125 ML", "pack": "12", "mrp": 60.0, "box_mrp": 720.0, "baseRate": 548.57, "gst": 27.43, "boxRate": 576.0}, {"name": "FUNNY FIG - 125 ML", "pack": "12", "mrp": 60.0, "box_mrp": 720.0, "baseRate": 548.57, "gst": 27.43, "boxRate": 576.0}, {"name": "CREAMY VANILLA - 125 ML", "pack": "12", "mrp": 60.0, "box_mrp": 720.0, "baseRate": 548.57, "gst": 27.43, "boxRate": 576.0}, {"name": "ALPHANSO MANGO - 125 ML", "pack": "12", "mrp": 60.0, "box_mrp": 720.0, "baseRate": 548.57, "gst": 27.43, "boxRate": 576.0}, {"name": "ROASTED ALMOND - 125 ML", "pack": "12", "mrp": 60.0, "box_mrp": 720.0, "baseRate": 548.57, "gst": 27.43, "boxRate": 576.0}, {"name": "NATURAL RICH DRY FRUIT - 125 ML", "pack": "12", "mrp": 60.0, "box_mrp": 720.0, "baseRate": 548.57, "gst": 27.43, "boxRate": 576.0}, {"name": "BROWNIE FUDGE CHOCOLATE - 125 ML", "pack": "12", "mrp": 60.0, "box_mrp": 720.0, "baseRate": 548.57, "gst": 27.43, "boxRate": 576.0}]},
-      {"cat": "IML TUB ICE CREAM - 500 ML", "items": [{"name": "BAVERIAN CHOCOLATE - 500 ML", "pack": "6", "mrp": 220.0, "box_mrp": 1320.0, "baseRate": 1005.71, "gst": 50.29, "boxRate": 1056.0}, {"name": "CHIKKU - 500 ML", "pack": "6", "mrp": 220.0, "box_mrp": 1320.0, "baseRate": 1005.71, "gst": 50.29, "boxRate": 1056.0}, {"name": "CARNIVAL ALMOND - 500 ML", "pack": "6", "mrp": 220.0, "box_mrp": 1320.0, "baseRate": 1005.71, "gst": 50.29, "boxRate": 1056.0}, {"name": "FUNNY FIG - 500 ML", "pack": "6", "mrp": 220.0, "box_mrp": 1320.0, "baseRate": 1005.71, "gst": 50.29, "boxRate": 1056.0}, {"name": "KESAR SANGAM - 500 ML", "pack": "6", "mrp": 220.0, "box_mrp": 1320.0, "baseRate": 1005.71, "gst": 50.29, "boxRate": 1056.0}, {"name": "CREAMY VANILLA - 500 ML", "pack": "6", "mrp": 220.0, "box_mrp": 1320.0, "baseRate": 1005.71, "gst": 50.29, "boxRate": 1056.0}, {"name": "ALPHANSO MANGO - 500 ML", "pack": "6", "mrp": 220.0, "box_mrp": 1320.0, "baseRate": 1005.71, "gst": 50.29, "boxRate": 1056.0}, {"name": "ROASTED ALMOND - 500 ML", "pack": "6", "mrp": 220.0, "box_mrp": 1320.0, "baseRate": 1005.71, "gst": 50.29, "boxRate": 1056.0}, {"name": "NATURAL RICH DRY FRUIT - 500 ML", "pack": "6", "mrp": 220.0, "box_mrp": 1320.0, "baseRate": 1005.71, "gst": 50.29, "boxRate": 1056.0}, {"name": "BROWNIE FUDGE CHOCOLATE - 500 ML", "pack": "6", "mrp": 220.0, "box_mrp": 1320.0, "baseRate": 1005.71, "gst": 50.29, "boxRate": 1056.0}]},
-      {"cat": "IML TUB ICE CREAM - 1000 ML", "items": [{"name": "BAVERIAN CHOCOLATE - 1000 ML", "pack": "4", "mrp": 400.0, "box_mrp": 1600.0, "baseRate": 1219.05, "gst": 60.95, "boxRate": 1280.0}, {"name": "CHIKKU - 1000 ML", "pack": "4", "mrp": 400.0, "box_mrp": 1600.0, "baseRate": 1219.05, "gst": 60.95, "boxRate": 1280.0}, {"name": "FUNNY FIG - 1000 ML", "pack": "4", "mrp": 400.0, "box_mrp": 1600.0, "baseRate": 1219.05, "gst": 60.95, "boxRate": 1280.0}, {"name": "CARNIVAL ALMOND - 1000 ML", "pack": "4", "mrp": 400.0, "box_mrp": 1600.0, "baseRate": 1219.05, "gst": 60.95, "boxRate": 1280.0}, {"name": "KESAR SANGAM - 1000 ML", "pack": "4", "mrp": 400.0, "box_mrp": 1600.0, "baseRate": 1219.05, "gst": 60.95, "boxRate": 1280.0}]}
-    ];
-    
-    let products = [];
-    let pId = 1;
-    rawCategoriesData.forEach(catGroup => {
-      catGroup.items.forEach(item => {
-        products.push({ id: pId++, cat: catGroup.cat, ...item });
-      });
-    });
-
-    let savedOutlets = JSON.parse(localStorage.getItem('craveman_outlets_local')) || [
-      { name: "Taj Cold Drinks", phone: "9885544332", beat: "Main Road", freezer: "350 Litres Chest Freezer", monthlySale: 0 },
-      { name: "Yasmeen Store", phone: "9440011223", beat: "Havanapet", freezer: "450 Litres Chest Freezer", monthlySale: 0 }
-    ];
-
-    let attendanceState = JSON.parse(localStorage.getItem('craveman_attend_ebala')) || {
-      hasPunchedIn: false, hasPunchedOut: false, inTime: null, outTime: null, date: null, selfieTaken: false
-    };
-
-    let attendanceHistory = JSON.parse(localStorage.getItem('craveman_attend_history')) || [];
-    let dayData = JSON.parse(localStorage.getItem('craveman_day_ebala')) || { visits: 0, orders: 0, boxes: 0, sales: 0 };
-    let monthlySalesTotal = parseFloat(localStorage.getItem('craveman_monthly_sales')) || 0;
-    let currentBill = null;
-    let currentFreezerPhotoData = null;
-    let selfiePhotoData = null;
-    let liveGPSCoords = { lat: null, lng: null, mapsUrl: "-", text: "Tracking GPS..." };
-
-    function fetchCurrentGPS() {
-      return new Promise((resolve) => {
-        const el = document.getElementById("gpsStatusText");
-        if (el) el.innerText = "Locking GPS...";
-        if (!("geolocation" in navigator)) return resolve({ mapsUrl: "-", text: "No GPS" });
-
-        navigator.geolocation.getCurrentPosition(
-          (pos) => {
-            const lat = pos.coords.latitude.toFixed(5);
-            const lng = pos.coords.longitude.toFixed(5);
-            const mapsUrl = `https://maps.google.com/?q=${lat},${lng}`;
-            const text = `${lat}, ${lng}`;
-            liveGPSCoords = { lat, lng, mapsUrl, text };
-            if (el) el.innerText = text + " (Live)";
-            resolve(liveGPSCoords);
-          },
-          () => {
-            if (el) el.innerText = "Location Off / Denied";
-            resolve({ mapsUrl: "-", text: "Denied" });
-          },
-          { timeout: 8000, enableHighAccuracy: true }
-        );
-      });
-    }
-
-    function refreshGPSLocation() { fetchCurrentGPS().then(res => alert(res.mapsUrl !== "-" ? "GPS Locked: " + res.text : "Location allow karein!")); }
-
-    function triggerCamera() { document.getElementById('selfieInput').click(); }
-    function previewSelfie(event) {
-      const file = event.target.files[0];
-      if (file) {
-        const r = new FileReader();
-        r.onload = function(e) {
-          selfiePhotoData = e.target.result;
-          document.getElementById('selfieImg').src = selfiePhotoData;
-          document.getElementById('selfiePlaceholder').classList.add('hidden');
-          document.getElementById('selfiePreviewBox').classList.remove('hidden');
-          attendanceState.selfieTaken = true;
-          localStorage.setItem('craveman_attend_ebala', JSON.stringify(attendanceState));
-        };
-        r.readAsDataURL(file);
-      }
-    }
-
-    function triggerFreezerCamera() { document.getElementById('freezerPhotoInput').click(); }
-    function previewFreezerPhoto(event) {
-      const file = event.target.files[0];
-      if (file) {
-        const r = new FileReader();
-        r.onload = function(e) {
-          currentFreezerPhotoData = e.target.result;
-          document.getElementById('freezerImg').src = currentFreezerPhotoData;
-          document.getElementById('freezerPlaceholder').classList.add('hidden');
-          document.getElementById('freezerPreviewBox').classList.remove('hidden');
-          currentFreezerPhotoTaken = true;
-        };
-        r.readAsDataURL(file);
-      }
-    }
-
-    async function handlePunch(type) {
-      if (type === 'IN' && !attendanceState.selfieTaken) {
-        alert("Please take a selfie first before punching IN!");
-        return;
-      }
-      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      const currentDate = new Date();
-      const dateStr = currentDate.toLocaleDateString();
-      const gps = await fetchCurrentGPS();
-
-      if (type === 'IN') {
-        attendanceState.hasPunchedIn = true;
-        attendanceState.hasPunchedOut = false;
-        attendanceState.inTime = time;
-        attendanceState.date = dateStr;
-        attendanceState.inGPS = gps.mapsUrl;
-        updateAttendanceUI();
-        
-        const punchMsg = `*🟢 ATTENDANCE PUNCH IN (DUTY START)*\n*Craveman Ice Cream - Shaik Enterprises*\n--------------------------------\n*Salesman:* ${FIXED_OFFICER_NAME}\n*Date:* ${dateStr}\n*Time:* ${time}\n*GPS:* ${gps.mapsUrl}\n--------------------------------`;
-        shareViaWebShare(punchMsg, selfiePhotoData);
-        alert(`Punch IN Successful at ${time}!`);
-      } else {
-        if (!confirm("End duty now?")) return;
-
-        attendanceState.hasPunchedOut = true;
-        attendanceState.outTime = time;
-        attendanceState.outGPS = gps.mapsUrl;
-        updateAttendanceUI();
-
-        const dayStatus = currentDate.getDay() === 0 ? "Sunday Leave" : "Present";
-        const existingIdx = attendanceHistory.findIndex(h => h.date === dateStr);
-        
-        if (existingIdx >= 0) {
-          attendanceHistory[existingIdx] = { date: dateStr, inTime: attendanceState.inTime, outTime: time, status: dayStatus };
-        } else {
-          attendanceHistory.unshift({ date: dateStr, inTime: attendanceState.inTime, outTime: time, status: dayStatus });
-        }
-        localStorage.setItem('craveman_attend_history', JSON.stringify(attendanceHistory));
-        
-        const punchOutMsg = `*🔴 ATTENDANCE PUNCH OUT (DUTY END)*\n*Craveman Ice Cream - Shaik Enterprises*\n--------------------------------\n*Salesman:* ${FIXED_OFFICER_NAME}\n*Status:* ${dayStatus}\n*Punch IN Time:* ${attendanceState.inTime}\n*Punch OUT Time:* ${time}\n*Total Outlets Visited:* ${dayData.visits}\n*Total Boxes Booked:* ${dayData.boxes} Boxes\n*Total Sales Value:* ₹${dayData.sales.toFixed(2)}\n*Date:* ${dateStr}\n--------------------------------`;
-        shareViaWebShare(punchOutMsg, selfiePhotoData);
-        alert(`Punch OUT Successful at ${time}!`);
-      }
-    }
-
-    function updateAttendanceUI() {
-      const badge = document.getElementById("dutyBadge");
-      const container = document.getElementById("lockedAppContainer");
-      const punchInBtn = document.getElementById("punchInBtn");
-      const punchOutBtn = document.getElementById("punchOutBtn");
-
-      if (!attendanceState.hasPunchedIn) {
-        badge.innerText = "NOT STARTED"; 
-        badge.className = "font-bold text-slate-600";
-        container.classList.add("opacity-30", "pointer-events-none");
-        punchInBtn.disabled = false;
-        punchInBtn.className = "bg-emerald-600 text-white font-bold py-2.5 rounded-xl text-xs shadow transition active:scale-95";
-        punchOutBtn.disabled = true;
-        punchOutBtn.className = "bg-slate-300 text-slate-500 font-bold py-2.5 rounded-xl text-xs shadow transition";
-      } else if (!attendanceState.hasPunchedOut) {
-        badge.innerText = "ON DUTY"; 
-        badge.className = "font-bold text-emerald-600";
-        container.classList.remove("opacity-30", "pointer-events-none");
-        punchInBtn.disabled = true;
-        punchInBtn.className = "bg-slate-300 text-slate-500 font-bold py-2.5 rounded-xl text-xs shadow transition";
-        punchOutBtn.disabled = false;
-        punchOutBtn.className = "bg-rose-600 text-white font-bold py-2.5 rounded-xl text-xs shadow transition active:scale-95";
-      } else {
-        badge.innerText = "COMPLETED"; 
-        badge.className = "font-bold text-blue-600";
-        container.classList.add("opacity-30", "pointer-events-none");
-        punchInBtn.disabled = false;
-        punchOutBtn.disabled = true;
-      }
-      localStorage.setItem('craveman_attend_ebala', JSON.stringify(attendanceState));
-    }
-
-    function openAttendanceCalendar() {
-      const grid = document.getElementById("calendarGrid");
-      grid.innerHTML = "";
-      
-      const now = new Date();
-      const year = now.getFullYear();
-      const month = now.getMonth();
-      
-      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-      document.getElementById("calMonthYearTitle").innerText = `${monthNames[month]} ${year}`;
-
-      const firstDayIndex = new Date(year, month, 1).getDay();
-      const totalDays = new Date(year, month + 1, 0).getDate();
-
-      const historyMap = {};
-      attendanceHistory.forEach(h => {
-        const dParts = h.date.split('/');
-        if (dParts.length === 3) {
-          const dNum = parseInt(dParts[1]);
-          historyMap[dNum] = h.status;
-        }
-      });
-
-      for (let i = 0; i < firstDayIndex; i++) {
-        grid.innerHTML += `<div></div>`;
-      }
-
-      for (let day = 1; day <= totalDays; day++) {
-        let statusClass = "bg-gray-100 text-gray-700 border";
-        let dotColor = "";
-        
-        const currentDateObj = new Date(year, month, day);
-        const isSun = currentDateObj.getDay() === 0;
-
-        if (historyMap[day] === 'Present') {
-          statusClass = "bg-emerald-100 text-emerald-900 border-emerald-300 font-bold";
-          dotColor = "🟢";
-        } else if (historyMap[day] === 'Absent') {
-          statusClass = "bg-rose-100 text-rose-900 border-rose-300 font-bold";
-          dotColor = "🔴";
-        } else if (isSun || historyMap[day] === 'Sunday Leave') {
-          statusClass = "bg-amber-100 text-amber-900 border-amber-300 font-bold";
-          dotColor = "🟡";
-        }
-
-        grid.innerHTML += `
-          <div class="h-10 rounded-xl flex flex-col items-center justify-center border ${statusClass}">
-            <span class="text-xs">${day}</span>
-            <span class="text-[9px]">${dotColor}</span>
-          </div>`;
-      }
-
-      document.getElementById("calendarModal").classList.remove("hidden");
-    }
-
-    function closeAttendanceCalendar() { document.getElementById("calendarModal").classList.add("hidden"); }
-
-    function shareCalendarWhatsApp() {
-      if (attendanceHistory.length === 0) return alert("No attendance logs to share!");
-      let logText = "";
-      attendanceHistory.forEach(h => {
-        logText += `• ${h.date}: ${h.status} (In: ${h.inTime || '--'})\n`;
-      });
-      const calMsg = `*📅 MONTHLY ATTENDANCE REPORT*\n*Craveman Ice Cream - Shaik Enterprises*\n--------------------------------\n*Salesman:* ${FIXED_OFFICER_NAME}\n${logText}--------------------------------`;
-      openNativeWhatsApp(calMsg);
-    }
-
-    function resetCalendarLog() {
-      if (confirm("Reset entire attendance calendar history?")) {
-        attendanceHistory = [];
-        localStorage.removeItem('craveman_attend_history');
-        openAttendanceCalendar();
-        alert("Attendance history reset successfully.");
-      }
-    }
-
-    function resetMonthlyTarget() {
-      if (confirm("Do you want to reset the monthly sales total to ₹0?")) {
-        monthlySalesTotal = 0;
-        localStorage.setItem('craveman_monthly_sales', monthlySalesTotal);
-        updateCounters();
-        alert("Monthly sales target reset successfully.");
-      }
-    }
-
-    function shareMonthlyTargetWhatsApp() {
-      const inc = getMonthlyIncentive(monthlySalesTotal);
-      let targetMax = 200000;
-      if (monthlySalesTotal >= 400000) targetMax = 500000;
-      else if (monthlySalesTotal >= 300000) targetMax = 400000;
-      else if (monthlySalesTotal >= 200000) targetMax = 300000;
-      let percent = Math.min(100, Math.round((monthlySalesTotal / targetMax) * 100));
-
-      const targetMsg = `*🎯 MONTHLY SALES TARGET REPORT*\n*Craveman Ice Cream - Shaik Enterprises*\n--------------------------------\n*Salesman:* ${FIXED_OFFICER_NAME}\n*Monthly Total Sale:* ₹${monthlySalesTotal.toFixed(2)}\n*Target Achievement:* ${percent}%\n*Bonus Earned:* ₹${inc}\n--------------------------------`;
-      shareViaWebShare(targetMsg, selfiePhotoData);
-    }
-
-    function openOutletPerformanceModal() {
-      const list = document.getElementById("outletPerfList");
-      list.innerHTML = "";
-      
-      let sortedOutlets = [...savedOutlets].sort((a, b) => (b.monthlySale || 0) - (a.monthlySale || 0));
-
-      sortedOutlets.forEach((o, idx) => {
-        let sale = o.monthlySale || 0;
-        let giftBadge = sale >= 30000 ? "🎁 Premium Gift Unlocked!" : `Need ₹${30000 - sale} more for Gift`;
-        let giftColor = sale >= 30000 ? "text-purple-700 font-black" : "text-slate-500";
-
-        list.innerHTML += `
-          <div class="border p-2.5 rounded-xl bg-slate-50 flex justify-between items-center">
-            <div>
-              <div class="font-bold text-slate-900">${idx + 1}. ${o.name} (${o.beat})</div>
-              <div class="text-[10px] text-slate-600">Monthly Sale: ₹${sale}</div>
-              <div class="text-[10px] ${giftColor}">${giftBadge}</div>
-            </div>
-            <div class="text-right font-black text-blue-900 text-sm">
-              #${idx + 1}
-            </div>
-          </div>`;
-      });
-      document.getElementById("outletPerfModal").classList.remove("hidden");
-    }
-
-    function closeOutletPerformanceModal() { document.getElementById("outletPerfModal").classList.add("hidden"); }
-
-    function shareOutletPerformanceWhatsApp() {
-      let sortedOutlets = [...savedOutlets].sort((a, b) => (b.monthlySale || 0) - (a.monthlySale || 0));
-      let text = `*🏆 OUTLET PERFORMANCE & GIFT RANKING*\n*Craveman Ice Cream - Shaik Enterprises*\n--------------------------------\n`;
-      sortedOutlets.forEach((o, idx) => {
-        let sale = o.monthlySale || 0;
-        let status = sale >= 30000 ? "Won Premium Gift 🎁" : "In Progress";
-        text += `${idx + 1}. ${o.name}: ₹${sale} [${status}]\n`;
-      });
-      text += `--------------------------------`;
-      shareViaWebShare(text, null);
-    }
-
-    function renderProducts(items) {
-      const list = document.getElementById("productList");
-      list.innerHTML = "";
-      items.forEach(p => {
-        list.innerHTML += `
-          <div class="py-2 flex items-center justify-between text-xs" id="item_row_${p.id}">
-            <div class="w-3/5 pr-1">
-              <div class="font-bold text-slate-900">${p.name}</div>
-              <div class="text-[10px] text-slate-500">${p.cat} | Pack: ${p.pack} Pcs | MRP: ₹${p.mrp}</div>
-              <div class="text-[11px] text-emerald-700 font-extrabold">Box Rate: ₹${p.boxRate} (GST Incl.)</div>
-            </div>
-            <div class="w-2/5 flex items-center justify-end gap-1.5">
-              <input type="number" min="0" value="0" id="qty_${p.id}" oninput="calculateTotal()" class="w-14 border rounded-lg p-1 text-center font-bold bg-slate-50 text-xs">
-              <span class="font-bold text-slate-700 w-12 text-right">₹<span id="sub_${p.id}">0</span></span>
-            </div>
-          </div>`;
-      });
-    }
-
-    function populateCategoryFilter() {
-      const cs = document.getElementById("categoryFilter");
-      [...new Set(products.map(p => p.cat))].forEach(c => cs.innerHTML += `<option value="${c}">${c}</option>`);
-    }
-
-    function calculateTotal() {
-      let taxable = 0, totalGst = 0, grand = 0;
-      products.forEach(p => {
-        const qty = parseInt(document.getElementById(`qty_${p.id}`).value) || 0;
-        if (qty > 0) {
-          taxable += qty * p.baseRate;
-          totalGst += qty * p.gst;
-          grand += qty * p.boxRate;
-          document.getElementById(`sub_${p.id}`).innerText = (qty * p.boxRate).toFixed(0);
-        } else {
-          document.getElementById(`sub_${p.id}`).innerText = "0";
-        }
-      });
-      document.getElementById("taxableTotal").innerText = taxable.toFixed(2);
-      document.getElementById("gstTotal").innerText = totalGst.toFixed(2);
-      document.getElementById("grandTotal").innerText = grand.toFixed(2);
-      calculateBalance();
-    }
-
-    function calculateBalance() {
-      const total = parseFloat(document.getElementById("grandTotal").innerText) || 0;
-      const cash = parseFloat(document.getElementById("cashPaid").value) || 0;
-      const upi = parseFloat(document.getElementById("upiPaid").value) || 0;
-      document.getElementById("balanceAmount").innerText = Math.max(0, total - (cash + upi)).toFixed(2);
-    }
-
-    function filterProducts() {
-      const q = document.getElementById("searchInput").value.toLowerCase();
-      const sc = document.getElementById("categoryFilter").value;
-      products.forEach(p => {
-        const match = (p.name.toLowerCase().includes(q) || p.cat.toLowerCase().includes(q) || p.pack.toLowerCase().includes(q)) && (!sc || p.cat === sc);
-        document.getElementById(`item_row_${p.id}`).style.display = match ? "flex" : "none";
-      });
-    }
-
-    async function submitOrder() {
-      const shop = document.getElementById("shopName").value.trim();
-      const phone = document.getElementById("shopPhone").value.trim();
-      const beat = document.getElementById("beat").value.trim() || "-";
-      const isOrder = document.querySelector('input[name="visitType"]:checked').value === 'order';
-
-      if (!shop) return alert("Please select an outlet from dropdown first!");
-
-      const gps = await fetchCurrentGPS();
-      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      const dateStr = new Date().toLocaleDateString();
-
-      dayData.visits += 1;
-
-      if (!isOrder) {
-        const reason = document.getElementById("noOrderReason").value;
-        updateCounters();
-        const noOrderMsg = `*VISIT REPORT*\nShop: ${shop}\nPhone: ${phone}\nBeat: ${beat}\nStatus: NO ORDER (${reason})\nGPS: ${gps.mapsUrl}`;
-        shareViaWebShare(noOrderMsg, currentFreezerPhotoData);
-        clearForm(); return;
-      }
-
-      let itemsList = [], totalBoxes = 0;
-      const grandTotal = parseFloat(document.getElementById("grandTotal").innerText) || 0;
-      const taxableTotal = parseFloat(document.getElementById("taxableTotal").innerText) || 0;
-      const gstTotal = parseFloat(document.getElementById("gstTotal").innerText) || 0;
-
-      products.forEach(p => {
-        const qty = parseInt(document.getElementById(`qty_${p.id}`).value) || 0;
-        if (qty > 0) {
-          totalBoxes += qty;
-          itemsList.push({ name: `${p.name} (${p.pack} pcs)`, qty, rate: p.boxRate, sub: (qty * p.boxRate).toFixed(0) });
-        }
-      });
-
-      if (totalBoxes === 0) return alert("Please select at least 1 box!");
-
-      dayData.orders += 1;
-      dayData.boxes += totalBoxes;
-      dayData.sales += grandTotal;
-      
-      monthlySalesTotal += grandTotal;
-      localStorage.setItem('craveman_monthly_sales', monthlySalesTotal);
-
-      const idx = document.getElementById("outletDropdown").value;
-      if (idx !== "") {
-        savedOutlets[idx].monthlySale = (savedOutlets[idx].monthlySale || 0) + grandTotal;
-        localStorage.setItem('craveman_outlets_local', JSON.stringify(savedOutlets));
-        populateOutlets();
-        document.getElementById("outletDropdown").value = idx;
-        onSelectSavedOutlet();
-      }
-
-      updateCounters();
-
-      const billNo = "CRV-" + Math.floor(1000 + Math.random() * 9000);
-      currentBill = {
-        billNo, shop, phone, beat, taxable: taxableTotal, gst: gstTotal, total: grandTotal, boxes: totalBoxes,
-        gpsLink: gps.mapsUrl, itemsList, date: dateStr + " " + timeStr
-      };
-
-      openBillModal(currentBill);
-      clearForm();
-    }
-
-    function getMonthlyIncentive(sales) {
-      if (sales >= 500000) return 4000;
-      if (sales >= 400000) return 3000;
-      if (sales >= 300000) return 2000;
-      if (sales >= 200000) return 1000;
-      return 0;
-    }
-
-    function openBillModal(b) {
-      document.getElementById("billSlipNo").innerText = b.billNo;
-      document.getElementById("billSlipDate").innerText = b.date;
-      document.getElementById("billSlipShop").innerText = b.shop;
-      document.getElementById("billSlipPhone").innerText = b.phone;
-      document.getElementById("billSlipBeat").innerText = b.beat;
-      document.getElementById("billSlipBoxes").innerText = b.boxes;
-      document.getElementById("billSlipTaxable").innerText = b.taxable.toFixed(2);
-      document.getElementById("billSlipGST").innerText = b.gst.toFixed(2);
-      document.getElementById("billSlipTotal").innerText = b.total.toFixed(2);
-
-      const div = document.getElementById("billItemsList");
-      div.innerHTML = "";
-      b.itemsList.forEach(it => {
-        div.innerHTML += `<div class="flex justify-between"><span>${it.name}</span><span>${it.qty} x ${it.rate} = ₹${it.sub}</span></div>`;
-      });
-      document.getElementById("billModal").classList.remove("hidden");
-    }
-
-    function closeBillModal() { document.getElementById("billModal").classList.add("hidden"); }
-
-    function shareBillToWhatsApp() {
-      if (!currentBill) return;
-      const b = currentBill;
-      let rows = ""; b.itemsList.forEach((it, idx) => { rows += `${idx+1}. ${it.name} - ${it.qty} Box (₹${it.sub})\n`; });
-      const billMsg = `*CRAVEMAN ICE CREAM - TAX INVOICE*\nBill: ${b.billNo}\nShop: ${b.shop} (${b.phone})\nBeat: ${b.beat}\n--------------------\n${rows}--------------------\nBoxes: ${b.boxes} | Total: ₹${b.total.toFixed(2)}\nGPS: ${b.gpsLink}\nThank You!`;
-      shareViaWebShare(billMsg, currentFreezerPhotoData);
-    }
-
-    function sendDayEndReport() {
-      const inc = getMonthlyIncentive(monthlySalesTotal);
-      const reportMsg = `*DAILY SALES REPORT (DSR)*\nSalesman: ${FIXED_OFFICER_NAME}\nVisits: ${dayData.visits}\nOrders: ${dayData.orders}\nBoxes: ${dayData.boxes}\nToday Sale: ₹${dayData.sales.toFixed(2)}\nMonthly Total Sale: ₹${monthlySalesTotal.toFixed(2)}\nMonthly Incentive Earned: ₹${inc}`;
-      shareViaWebShare(reportMsg, selfiePhotoData);
-    }
-
-    function populateOutlets() {
-      const dd = document.getElementById("outletDropdown");
-      dd.innerHTML = `<option value="">-- Choose From Saved Outlets --</option>`;
-      
-      let sortedOutlets = [...savedOutlets].map((o, index) => ({...o, originalIndex: index})).sort((a, b) => (b.monthlySale || 0) - (a.monthlySale || 0));
-
-      sortedOutlets.forEach((o) => {
-        dd.innerHTML += `<option value="${o.originalIndex}">${o.name} (${o.beat}) - ₹${o.monthlySale || 0}</option>`;
-      });
-    }
-
-    function onSelectSavedOutlet() {
-      const idx = document.getElementById("outletDropdown").value;
-      const displayCard = document.getElementById("selectedOutletDisplay");
-      if (idx !== "") {
-        const o = savedOutlets[idx];
-        document.getElementById("shopName").value = o.name;
-        document.getElementById("shopPhone").value = o.phone;
-        document.getElementById("beat").value = o.beat;
-        document.getElementById("freezerSize").value = o.freezer;
-
-        document.getElementById("dispShopName").innerText = o.name;
-        document.getElementById("dispPhone").innerText = o.phone;
-        document.getElementById("dispBeat").innerText = o.beat;
-        document.getElementById("dispFreezer").innerText = o.freezer;
-        document.getElementById("dispOutletSale").innerText = o.monthlySale || 0;
-        displayCard.classList.remove("hidden");
-      } else {
-        document.getElementById("shopName").value = "";
-        document.getElementById("shopPhone").value = "";
-        document.getElementById("beat").value = "";
-        displayCard.classList.add("hidden");
-      }
-    }
-
-    function deleteCurrentOutlet() {
-      const idx = document.getElementById("outletDropdown").value;
-      if (idx === "") return alert("Please select an outlet from the dropdown first!");
-      if (confirm(`Do you want to delete "${savedOutlets[idx].name}"?`)) {
-        savedOutlets.splice(idx, 1);
-        localStorage.setItem('craveman_outlets_local', JSON.stringify(savedOutlets));
-        populateOutlets();
-        clearForm();
-        document.getElementById("selectedOutletDisplay").classList.add("hidden");
-        alert("Outlet deleted successfully!");
-      }
-    }
-
-    function openNewOutletModal() { document.getElementById("newOutletModal").classList.remove("hidden"); }
-    function closeNewOutletModal() { document.getElementById("newOutletModal").classList.add("hidden"); }
-
-    function saveNewOutlet() {
-      const name = document.getElementById("regShopName").value.trim();
-      const phone = document.getElementById("regPhone").value.trim();
-      const beat = document.getElementById("regBeat").value.trim();
-      const freezer = document.getElementById("regFreezer").value;
-      if (!name || !phone || !beat) return alert("Please fill all outlet details.");
-      savedOutlets.push({ name, phone, beat, freezer, monthlySale: 0 });
-      localStorage.setItem('craveman_outlets_local', JSON.stringify(savedOutlets));
-      populateOutlets();
-
-      const newIdx = savedOutlets.length - 1;
-      document.getElementById("outletDropdown").value = newIdx;
-      onSelectSavedOutlet();
-
-      document.getElementById("regShopName").value = "";
-      document.getElementById("regPhone").value = "";
-      document.getElementById("regBeat").value = "";
-      closeNewOutletModal();
-      alert("Outlet saved & selected successfully!");
-    }
-
-    function clearForm() {
-      document.getElementById("outletDropdown").value = "";
-      document.getElementById("shopName").value = "";
-      document.getElementById("shopPhone").value = "";
-      document.getElementById("beat").value = "";
-      document.getElementById("selectedOutletDisplay").classList.add("hidden");
-      document.getElementById("cashPaid").value = "0";
-      document.getElementById("upiPaid").value = "0";
-      products.forEach(p => document.getElementById(`qty_${p.id}`).value = "0");
-      calculateTotal();
-    }
-
-    function updateCounters() {
-      document.getElementById("statVisits").innerText = dayData.visits;
-      document.getElementById("statOrders").innerText = dayData.orders;
-      document.getElementById("statBoxes").innerText = dayData.boxes;
-      document.getElementById("statSales").innerText = dayData.sales.toFixed(0);
-      
-      document.getElementById("monthlySalesVal").innerText = monthlySalesTotal.toFixed(0);
-      const inc = getMonthlyIncentive(monthlySalesTotal);
-      document.getElementById("monthlyIncentiveTotal").innerText = inc;
-
-      let targetMax = 200000;
-      if (monthlySalesTotal >= 400000) targetMax = 500000;
-      else if (monthlySalesTotal >= 300000) targetMax = 400000;
-      else if (monthlySalesTotal >= 200000) targetMax = 300000;
-
-      let percent = Math.min(100, Math.round((monthlySalesTotal / targetMax) * 100));
-      document.getElementById("targetPercent").innerText = percent + "%";
-      document.getElementById("targetProgressBar").style.width = percent + "%";
-
-      let nextTarget = "Target: ₹2L (₹1k Bonus)";
-      if (monthlySalesTotal >= 500000) nextTarget = "Max Slab Achieved (₹4k Bonus)!";
-      else if (monthlySalesTotal >= 400000) nextTarget = "Next Target: ₹5L (₹4k Bonus)";
-      else if (monthlySalesTotal >= 300000) nextTarget = "Next Target: ₹4L (₹3k Bonus)";
-      else if (monthlySalesTotal >= 200000) nextTarget = "Next Target: ₹3L (₹2k Bonus)";
-      document.getElementById("slabStatusText").innerText = nextTarget;
-
-      localStorage.setItem('craveman_day_ebala', JSON.stringify(dayData));
-      localStorage.setItem('craveman_monthly_sales', monthlySalesTotal);
-    }
-
-    function resetDayData() {
-      if (confirm("Reset today's counters?")) {
-        dayData = { visits: 0, orders: 0, boxes: 0, sales: 0 };
-        updateCounters();
-      }
-    }
-
-    function toggleOrderSection(isOrder) {
-      document.getElementById("orderBookingSection").style.display = isOrder ? "block" : "none";
-      document.getElementById("noOrderReasonBox").style.display = isOrder ? "none" : "block";
-    }
-
-    renderProducts(products);
-    populateCategoryFilter();
-    populateOutlets();
-    updateCounters();
-    updateAttendanceUI();
-    fetchCurrentGPS();
-  </script>
-</body>
-</html>
+      // S
