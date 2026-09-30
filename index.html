@@ -23,9 +23,16 @@
   <div class="bg-gradient-to-b from-[#1b1c6e] via-[#21237a] to-[#161758] text-white p-4 rounded-3xl shadow-xl mb-4 text-center relative overflow-hidden border border-blue-900/40">
     <div class="flex flex-col items-center justify-center">
       <div class="relative mb-1">
-        <svg viewBox="0 0 160 170" class="w-20 h-20 drop-shadow-md overflow-visible">
-          <circle cx="88" cy="78" rx="42" ry="42" fill="#ffffff" stroke="#1b1c6e" stroke-width="3" />
-          <circle cx="88" cy="78" rx="37" ry="37" fill="#ff7800" />
+        <svg viewBox="0 0 160 170" class="w-24 h-24 drop-shadow-md overflow-visible">
+          <path d="M72 40 C60 18 78 8 86 28 Z" fill="#58b338" stroke="#1b1c6e" stroke-width="2.5" stroke-linejoin="round" />
+          <path d="M86 36 C96 15 116 22 102 38 Z" fill="#67c344" stroke="#1b1c6e" stroke-width="2.5" stroke-linejoin="round" />
+          <path d="M42 62 C34 50 40 42 46 45 C48 38 55 40 54 48 C58 42 64 45 60 52 C65 50 67 56 63 60 C58 67 52 74 62 82" fill="#67c344" stroke="#1b1c6e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M112 78 C124 76 130 92 118 100" fill="none" stroke="#1b1c6e" stroke-width="4.5" stroke-linecap="round" />
+          <path d="M112 78 C124 76 130 92 118 100" fill="none" stroke="#67c344" stroke-width="3" stroke-linecap="round" />
+          <ellipse cx="88" cy="78" rx="42" ry="42" fill="#ffffff" stroke="#1b1c6e" stroke-width="3" />
+          <ellipse cx="88" cy="78" rx="37" ry="37" fill="#ff7800" />
+          <path d="M112 60 C98 48 76 52 68 66 C58 82 66 102 84 106 C98 108 110 98 112 92 C108 94 96 98 84 94 C74 90 70 76 76 68 C82 58 98 56 108 64 Z" fill="#fff5ea" />
+          <ellipse cx="91" cy="78" rx="23" ry="23" fill="#ff7800" />
           <ellipse cx="80" cy="70" rx="4" ry="5.5" fill="#1b1c6e" />
           <circle cx="78.5" cy="68.5" r="1.5" fill="#ffffff" />
           <path d="M99 68 Q105 64 110 70" fill="none" stroke="#1b1c6e" stroke-width="2.8" stroke-linecap="round" />
@@ -33,17 +40,21 @@
           <circle cx="107" cy="76" r="3" fill="#ff5500" opacity="0.6" />
           <path d="M82 81 Q95 96 106 81 Z" fill="#b91c1c" stroke="#1b1c6e" stroke-width="2" stroke-linejoin="round" />
           <path d="M88 88 Q95 84 102 88 Q95 95 88 88 Z" fill="#fca5a5" />
+          <path d="M84 118 L84 136" stroke="#67c344" stroke-width="4.5" stroke-linecap="round" />
+          <path d="M92 118 L92 136" stroke="#67c344" stroke-width="4.5" stroke-linecap="round" />
+          <ellipse cx="76" cy="138" rx="10" ry="5" fill="#67c344" stroke="#1b1c6e" stroke-width="2" />
+          <ellipse cx="100" cy="138" rx="10" ry="5" fill="#67c344" stroke="#1b1c6e" stroke-width="2" />
         </svg>
       </div>
       <div class="relative mt-1">
-        <h1 class="text-3xl font-black italic tracking-wide text-white uppercase leading-none drop-shadow">
+        <h1 class="text-3xl font-black italic tracking-wide text-white uppercase leading-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
           <span class="text-[#e2231a] drop-shadow-[0_2px_0_#ffffff] font-extrabold tracking-tight">CRAVEMAN</span>
           <span class="text-[10px] not-italic font-bold align-top text-white ml-0.5 border border-white rounded-full px-0.5">®</span>
         </h1>
         <div class="inline-block bg-[#48a528] border-2 border-white text-white text-[9px] font-black px-3 py-0.5 rounded-full tracking-wider uppercase mt-1 shadow-md">
           WE CARE FOR YOUR CRAVINGS
         </div>
-        <div class="text-xs font-black text-white uppercase tracking-widest mt-1 drop-shadow">
+        <div class="text-sm font-black text-white uppercase tracking-widest mt-1 drop-shadow">
           ICE CREAM
         </div>
       </div>
@@ -61,7 +72,7 @@
         <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
         <span class="text-xs font-black text-slate-700 uppercase tracking-wide">Field Officer Attendance</span>
       </div>
-      <button type="button" onclick="playBeep(); openAttendanceCalendar()" class="text-[11px] font-bold text-blue-700 bg-blue-50 px-3 py-1 rounded-lg border border-blue-200 flex items-center gap-1">
+      <button onclick="playBeep(); openAttendanceCalendar()" class="text-[11px] font-bold text-blue-700 bg-blue-50 px-3 py-1 rounded-lg border border-blue-200 flex items-center gap-1">
         <span>📅 Attendance Calendar</span>
       </button>
     </div>
@@ -77,30 +88,33 @@
       </div>
     </div>
 
-    <!-- DIRECT NATIVE CAMERA -->
-    <div class="border-2 border-dashed border-blue-300 rounded-2xl p-3 text-center bg-blue-50/30">
-      <input type="file" id="selfieFileInput" accept="image/*" capture="user" onchange="previewSelfie(event)" class="w-full text-xs text-slate-600 file:mr-2 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer">
-      <div id="selfieDoneMsg" class="hidden mt-2 text-xs font-bold text-emerald-600">📸 Photo Captured Successfully!</div>
+    <!-- Selfie Capture -->
+    <div class="border-2 border-dashed border-slate-300 rounded-2xl p-3 text-center bg-slate-50/50">
+      <input type="file" id="selfieInput" accept="image/*" capture="user" onchange="previewSelfie(event)" class="hidden">
+      <div id="selfiePlaceholder" onclick="playBeep(); triggerCamera()" class="cursor-pointer py-1">
+        <div class="w-10 h-10 mx-auto mb-1 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-lg shadow-sm">📸</div>
+        <p class="text-xs font-bold text-slate-700">Take Duty Selfie (Required)</p>
+      </div>
+      <div id="selfiePreviewBox" class="hidden relative inline-block">
+        <img id="selfieImg" src="" alt="Selfie" class="w-20 h-20 object-cover rounded-xl border-2 border-emerald-500 mx-auto shadow">
+        <button onclick="playBeep(); triggerCamera()" class="absolute -bottom-2 -right-2 bg-blue-600 text-white text-[9px] px-2 py-0.5 rounded-full font-bold">Retake</button>
+      </div>
     </div>
 
     <div class="grid grid-cols-2 gap-2 pt-1">
-      <button type="button" id="punchInBtn" onclick="playSuccessSound(); handlePunch('IN')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl text-xs shadow-md active:scale-95 transition cursor-pointer">
-        📍 Punch IN (Start)
-      </button>
-      <button type="button" id="punchOutBtn" onclick="playSuccessSound(); handlePunch('OUT')" disabled class="bg-slate-300 text-slate-500 font-bold py-3.5 rounded-xl text-xs shadow cursor-not-allowed">
-        🏁 Punch OUT (End)
-      </button>
+      <button id="punchInBtn" onclick="playSuccessSound(); handlePunch('IN')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl text-xs shadow transition active:scale-95">📍 Punch IN (Start)</button>
+      <button id="punchOutBtn" onclick="playSuccessSound(); handlePunch('OUT')" disabled class="bg-slate-300 text-slate-500 font-bold py-2.5 rounded-xl text-xs shadow transition">🏁 Punch OUT (End)</button>
     </div>
   </div>
 
   <!-- LOCKED CONTAINER -->
-  <div id="lockedAppContainer" class="opacity-40 pointer-events-none transition-all duration-300 space-y-4">
+  <div id="lockedAppContainer" class="opacity-30 pointer-events-none transition-all duration-300 space-y-4">
 
-    <!-- 2. PERFORMANCE & MONTHLY TARGETS -->
+    <!-- 2. PERFORMANCE & MONTHLY SALES TARGETS / INCENTIVES -->
     <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 space-y-3">
       <div class="flex justify-between items-center border-b pb-2">
         <span class="text-xs font-bold text-slate-500 uppercase tracking-wide">Today's Sales Performance</span>
-        <button type="button" onclick="playBeep(); resetDayData()" class="text-[11px] text-red-600 font-semibold underline">Reset Day</button>
+        <button onclick="playBeep(); resetDayData()" class="text-[11px] text-red-600 font-semibold underline">Reset Day</button>
       </div>
       
       <div class="grid grid-cols-4 gap-1.5 text-center">
@@ -122,7 +136,7 @@
         </div>
       </div>
 
-      <!-- SALESMAN MONTHLY TARGET TRACKER -->
+      <!-- SALESMAN MONTHLY TARGET & INCENTIVE SLAB TRACKER -->
       <div class="bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200 p-3 rounded-xl space-y-2">
         <div class="flex justify-between items-center">
           <div>
@@ -148,10 +162,10 @@
         </div>
 
         <div class="flex gap-2 pt-1 border-t border-indigo-100">
-          <button type="button" onclick="playBeep(); shareMonthlyTargetWhatsApp()" class="w-1/2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-1.5 rounded-lg text-[11px] flex items-center justify-center gap-1">
+          <button onclick="playBeep(); shareMonthlyTargetWhatsApp()" class="w-1/2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-1.5 rounded-lg text-[11px] flex items-center justify-center gap-1">
             <span>📲 Share Target</span>
           </button>
-          <button type="button" onclick="playBeep(); resetMonthlyTarget()" class="w-1/2 bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-600 font-bold py-1.5 rounded-lg text-[11px] flex items-center justify-center gap-1">
+          <button onclick="playBeep(); resetMonthlyTarget()" class="w-1/2 bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-600 font-bold py-1.5 rounded-lg text-[11px] flex items-center justify-center gap-1">
             <span>🗑️ Reset Total</span>
           </button>
         </div>
@@ -164,14 +178,14 @@
           <div class="text-[11px] text-slate-700 mt-0.5">Reach ₹30,000 monthly sale & win Premium Gift! 🎁</div>
         </div>
         <div>
-          <button type="button" onclick="playBeep(); openOutletPerformanceModal()" class="bg-amber-600 hover:bg-amber-700 text-white font-bold px-3 py-2 rounded-xl text-xs shadow active:scale-95 transition">
+          <button onclick="playBeep(); openOutletPerformanceModal()" class="bg-amber-600 hover:bg-amber-700 text-white font-bold px-3 py-2 rounded-xl text-xs shadow active:scale-95 transition">
             View Ranking
           </button>
         </div>
       </div>
     </div>
 
-    <!-- 3. OUTLET AUDIT -->
+    <!-- 3. OUTLET & FREEZER AUDIT -->
     <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 space-y-3">
       <div class="flex justify-between items-center border-b pb-2">
         <span class="text-xs font-black text-slate-700 uppercase tracking-wide">Outlet & Freezer Audit</span>
@@ -217,6 +231,18 @@
         <div class="text-slate-600 text-[11px] mt-1">Phone: <span id="dispPhone">--</span> | Area: <span id="dispBeat">--</span> | Freezer: <span id="dispFreezer">--</span></div>
       </div>
 
+      <div class="border-2 border-dashed border-cyan-300 rounded-xl p-3 text-center bg-cyan-50/40">
+        <input type="file" id="freezerPhotoInput" accept="image/*" capture="environment" onchange="previewFreezerPhoto(event)" class="hidden">
+        <div id="freezerPlaceholder" onclick="playBeep(); triggerFreezerCamera()" class="cursor-pointer py-1">
+          <div class="w-9 h-9 mx-auto mb-1 rounded-full bg-cyan-100 text-cyan-800 flex items-center justify-center text-base shadow-sm">❄️</div>
+          <p class="text-xs font-bold text-slate-800">Click Deep Freezer Photo</p>
+        </div>
+        <div id="freezerPreviewBox" class="hidden relative inline-block">
+          <img id="freezerImg" src="" alt="Freezer" class="w-24 h-16 object-cover rounded-xl border-2 border-cyan-500 mx-auto shadow">
+          <button onclick="playBeep(); triggerFreezerCamera()" class="absolute -bottom-2 -right-2 bg-cyan-700 text-white text-[9px] px-2 py-0.5 rounded-full font-bold">Retake</button>
+        </div>
+      </div>
+
       <div>
         <label class="text-xs font-bold text-slate-600 uppercase">Visit Status</label>
         <div class="flex gap-4 mt-1.5">
@@ -238,7 +264,7 @@
           <option value="Pending Payment Issue">Pending Payment Issue</option>
           <option value="Owner Not Available">Owner Not Available</option>
         </select>
-        <button type="button" onclick="playBeep(); submitVisitOnly()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-2.5 rounded-xl text-xs shadow">
+        <button type="button" onclick="playBeep(); submitOrder()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-2.5 rounded-xl text-xs shadow">
           📍 Share Visit Proof to WhatsApp
         </button>
       </div>
@@ -295,40 +321,4 @@
     </div>
 
     <!-- SUBMIT & REPORT BUTTONS -->
-    <div class="space-y-2.5 pt-2">
-      <button type="button" onclick="playSuccessSound(); submitOrder()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-2xl shadow-lg active:scale-98 transition text-sm flex items-center justify-center gap-2 cursor-pointer">
-        <span>🧾</span> Submit Order & Generate GST Bill Slip
-      </button>
-      <button type="button" onclick="playSuccessSound(); sendDayEndReport()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-2xl shadow-md text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 cursor-pointer">
-        <span>📊</span> Share Day-End WhatsApp Summary
-      </button>
-    </div>
-
-  </div> <!-- END OF LOCKED CONTAINER -->
-
-  <!-- MODALS -->
-  <div id="billModal" class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-3 overflow-y-auto">
-    <div id="printableSlip" class="bg-white w-full max-w-xs rounded-2xl p-4 shadow-2xl space-y-2 font-mono text-xs my-auto border">
-      <div class="text-center border-b pb-2 border-dashed border-slate-400">
-        <h2 class="font-black text-sm uppercase">CRAVEMAN ICE CREAM</h2>
-        <p class="text-[10px] text-slate-700 uppercase">Shaik Enterprises, Adoni</p>
-      </div>
-      <div class="text-[10px] space-y-0.5 border-b pb-1.5 border-dashed border-slate-300">
-        <div>Bill No : <span id="billSlipNo" class="font-bold">#CRV-101</span></div>
-        <div>Date    : <span id="billSlipDate">--</span></div>
-        <div>Shop    : <span id="billSlipShop" class="font-bold">--</span></div>
-        <div>Phone   : <span id="billSlipPhone">--</span></div>
-        <div>Beat    : <span id="billSlipBeat">--</span></div>
-        <div>Salesman: <span class="font-bold">E Balakrishna</span></div>
-      </div>
-      <div id="billItemsList" class="py-1 border-b border-dashed border-slate-300 space-y-1 text-[10px]"></div>
-      <div class="space-y-1 text-[10px] pt-1 border-b pb-1.5 border-dashed font-semibold">
-        <div class="flex justify-between"><span>Boxes:</span><span id="billSlipBoxes">0</span></div>
-        <div class="flex justify-between"><span>Taxable:</span><span>₹ <span id="billSlipTaxable">0.00</span></span></div>
-        <div class="flex justify-between"><span>GST 5%:</span><span>₹ <span id="billSlipGST">0.00</span></span></div>
-      </div>
-      <div class="flex justify-between text-xs font-black pt-1 border-b pb-2">
-        <span>Net Total:</span><span>₹ <span id="billSlipTotal">0.00</span></span>
-      </div>
-      <div class="space-y-1.5 pt-2 no-print">
-        <button type="button" onclick="playBeep(); shareBillToWhatsApp()" class="w-full bg-emerald-600 text-white font-bold p
+   
