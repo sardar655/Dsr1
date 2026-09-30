@@ -100,22 +100,24 @@
       </div>
     </div>
 
-    <!-- Selfie Input -->
-    <div class="border-2 border-dashed border-slate-300 rounded-2xl p-2.5 text-center bg-slate-50/50">
-      <input type="file" id="selfieInput" accept="image/*" capture="user" onchange="previewSelfie(event)" class="hidden">
-      <div id="selfiePlaceholder" onclick="triggerCamera()" class="cursor-pointer py-1">
-        <div class="w-9 h-9 mx-auto mb-1 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-base shadow-sm">📸</div>
-        <p class="text-xs font-bold text-slate-700">Take Duty Selfie (Required)</p>
-      </div>
+    <!-- 100% Reliable Native Selfie Upload Label -->
+    <div class="border-2 border-dashed border-slate-300 rounded-2xl p-3 text-center bg-slate-50/50">
+      <input type="file" id="selfieInput" accept="image/*" capture="user" onchange="previewSelfie(event)" style="display:none;">
+      
+      <label for="selfieInput" id="selfiePlaceholder" class="cursor-pointer block py-1">
+        <div class="w-10 h-10 mx-auto mb-1 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-lg shadow-sm">📸</div>
+        <p class="text-xs font-bold text-slate-700">Take Duty Selfie (Click Here)</p>
+      </label>
+
       <div id="selfiePreviewBox" class="hidden relative inline-block">
-        <img id="selfieImg" src="" alt="Selfie" class="w-16 h-16 object-cover rounded-xl border-2 border-emerald-500 mx-auto shadow">
-        <button onclick="triggerCamera()" class="absolute -bottom-1 -right-1 bg-blue-600 text-white text-[8px] px-1.5 py-0.5 rounded-full font-bold">Retake</button>
+        <img id="selfieImg" src="" alt="Selfie" class="w-20 h-20 object-cover rounded-xl border-2 border-emerald-500 mx-auto shadow">
+        <label for="selfieInput" class="absolute -bottom-1 -right-1 bg-blue-600 text-white text-[9px] px-2 py-0.5 rounded-full font-bold cursor-pointer">Retake</label>
       </div>
     </div>
 
     <div class="grid grid-cols-2 gap-2 pt-1">
-      <button id="punchInBtn" onclick="handlePunch('IN')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl text-xs shadow active:scale-95">📍 Punch IN (Start)</button>
-      <button id="punchOutBtn" onclick="handlePunch('OUT')" disabled class="bg-slate-300 text-slate-500 font-bold py-2.5 rounded-xl text-xs shadow">🏁 Punch OUT (End)</button>
+      <button type="button" id="punchInBtn" onclick="handlePunch('IN')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl text-xs shadow active:scale-95">📍 Punch IN (Start)</button>
+      <button type="button" id="punchOutBtn" onclick="handlePunch('OUT')" disabled class="bg-slate-300 text-slate-500 font-bold py-3 rounded-xl text-xs shadow">🏁 Punch OUT (End)</button>
     </div>
   </div>
 
@@ -166,12 +168,10 @@
           <span class="font-bold text-slate-700">GPS:</span>
           <span id="gpsStatusText" class="text-slate-500 font-mono text-[10px]">Locking GPS...</span>
         </div>
-        <button type="button" onclick="refreshGPSLocation()" class="text-[10px] font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded-lg">Refresh</button>
+        <button type="button" onclick="refreshGPSLocation()" class="text-[10px] font-bold text-blue-700 bg-blue-100 px-2.5 py-0.5 rounded-lg">Refresh</button>
       </div>
 
       <input type="hidden" id="shopName">
-      <input type="hidden" id="shopPhone">
-      <input type="hidden" id="beat">
 
       <div class="flex gap-2 items-center">
         <div class="flex-grow">
@@ -181,7 +181,7 @@
           </select>
         </div>
         <button type="button" onclick="deleteCurrentOutlet()" class="mt-5 bg-red-50 text-red-600 border border-red-200 px-3 py-2 rounded-xl text-xs font-bold">
-          🗑️
+          🗑️️
         </button>
       </div>
 
@@ -207,7 +207,7 @@
           <option value="Owner Not Available">Owner Not Available</option>
         </select>
         <button type="button" onclick="submitVisitOnly()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-2.5 rounded-xl text-xs shadow">
-          📍 Sync Visit Only to RSM
+          📍 Sync Visit to RSM
         </button>
       </div>
     </div>
@@ -247,7 +247,7 @@
         </div>
       </div>
 
-      <button onclick="submitOrder()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-2xl shadow-lg active:scale-98 transition text-sm flex items-center justify-center gap-2">
+      <button type="button" onclick="submitOrder()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-2xl shadow-lg active:scale-98 transition text-sm flex items-center justify-center gap-2">
         <span>🧾</span> Submit Order & Sync to Cloud
       </button>
     </div>
@@ -262,17 +262,15 @@
       <input id="regPhone" type="tel" placeholder="Phone Number *" class="w-full border p-2.5 rounded-xl text-xs">
       <input id="regBeat" type="text" placeholder="Area / Location *" class="w-full border p-2.5 rounded-xl text-xs" value="Adoni">
       <div class="flex gap-2 pt-1">
-        <button onclick="closeNewOutletModal()" class="w-1/3 bg-slate-200 text-slate-700 py-2.5 rounded-xl text-xs font-bold">Cancel</button>
-        <button onclick="saveNewOutlet()" class="w-2/3 bg-blue-600 text-white py-2.5 rounded-xl text-xs font-bold shadow">Save Outlet</button>
+        <button type="button" onclick="closeNewOutletModal()" class="w-1/3 bg-slate-200 text-slate-700 py-2.5 rounded-xl text-xs font-bold">Cancel</button>
+        <button type="button" onclick="saveNewOutlet()" class="w-2/3 bg-blue-600 text-white py-2.5 rounded-xl text-xs font-bold shadow">Save Outlet</button>
       </div>
     </div>
   </div>
 
   <script>
-    // SHEETDB API ENDPOINT
     const SHEETDB_API_URL = "https://sheetdb.io/api/v1/pfa3wfno58xy9";
 
-    // 52 Exact Master Items
     const rawCategoriesData = [
       {"cat": "CUPS 70ML (Rs. 10 MRP)", "items": [{"name": "VANILLA 70ml (24 Pcs)", "pack": "24", "mrp": 10.0, "boxRate": 192.0}, {"name": "BUTTER SCOTCH 60ml(24 Pcs)", "pack": "24", "mrp": 10.0, "boxRate": 192.0}, {"name": "CHOCOLATE 60ml(24 Pcs)", "pack": "24", "mrp": 10.0, "boxRate": 192.0}, {"name": "PISTA 60ml(24 Pcs)", "pack": "24", "mrp": 10.0, "boxRate": 192.0}]},
       {"cat": "ICE CANDIES 60ML (Rs. 10 MRP)", "items": [{"name": "ORANGE ICE CANDY 60ml(24 Pcs)", "pack": "24", "mrp": 10.0, "boxRate": 192.0}, {"name": "MANGO ICE CANDY 60ml(24 Pcs)", "pack": "24", "mrp": 10.0, "boxRate": 192.0}, {"name": "Grape Icecandy 60ML(24pcs)", "pack": "24", "mrp": 10.0, "boxRate": 192.0}, {"name": "Pineapple Ice Candy 60ml(24pcs)", "pack": "24", "mrp": 10.0, "boxRate": 192.0}, {"name": "Green Apple Ice Candy 60ML (24 Pcs)", "pack": "24", "mrp": 10.0, "boxRate": 192.0}, {"name": "Blue Berry Ice Candy 60ML (24 Pcs)", "pack": "24", "mrp": 10.0, "boxRate": 192.0}]},
@@ -282,4 +280,4 @@
       {"cat": "CONES 60ML", "items": [{"name": "VANILLA CONE 60ML (16 PCS)", "pack": "16", "mrp": 20.0, "boxRate": 256.0}, {"name": "STRAWBERRY CONE 60ML (16 Pcs)", "pack": "16", "mrp": 20.0, "boxRate": 256.0}, {"name": "PISTA CONE 60ML (16 PCS)", "pack": "16", "mrp": 20.0, "boxRate": 256.0}, {"name": "BUTTER SCOTCH CONE 60ml - 16 PCS", "pack": "16", "mrp": 25.0, "boxRate": 320.0}, {"name": "CHOCOLATE CONE 60ml (16 Pcs)", "pack": "16", "mrp": 25.0, "boxRate": 320.0}, {"name": "BLACK CURRANT CONE 60ML (16 PCS)", "pack": "16", "mrp": 25.0, "boxRate": 320.0}]},
       {"cat": "CONES 110ML (BIG CONES)", "items": [{"name": "VANILLA CONE 110ML (12 PCS)", "pack": "12", "mrp": 30.0, "boxRate": 288.0}, {"name": "Strawberry Cone 110ml (12 Pcs)", "pack": "12", "mrp": 30.0, "boxRate": 288.0}, {"name": "PISTA CONE 110ML (16 PCS)", "pack": "16", "mrp": 40.0, "boxRate": 512.0}, {"name": "BUTTER SCOTCH CONE 110ml (12 PCS)", "pack": "12", "mrp": 40.0, "boxRate": 384.0}, {"name": "CHOCOLATE CONE 110ML (12 PCS)", "pack": "12", "mrp": 40.0, "boxRate": 384.0}, {"name": "BLACK CURRANT CONE 110ML (12 PCS)", "pack": "12", "mrp": 40.0, "boxRate": 384.0}]},
       {"cat": "KULFI & MATKA", "items": [{"name": "MAWA KULFI 60ml (10 Pcs)", "pack": "10", "mrp": 30.0, "boxRate": 240.0}, {"name": "GULKAND KULFI 60ml (10 Pcs)", "pack": "10", "mrp": 30.0, "boxRate": 240.0}, {"name": "MALAI MASTI KULFI 60ml (10 Pcs)", "pack": "10", "mrp": 30.0, "boxRate": 240.0}, {"name": "PISTA KESAR KULFI 60ml (10 Pcs)", "pack": "10", "mrp": 30.0, "boxRate": 240.0}, {"name": "CHOCO ALMOND KULFI 60ml (10 Pcs)", "pack": "10", "mrp": 30.0, "boxRate": 240.0}, {"name": "MAWA CRUNCH KULFI 60ml (10 Pcs)", "pack": "10", "mrp": 30.0, "boxRate": 240.0}, {"name": "Premium Matka Kulfi 100ml(12 Pcs)", "pack": "12", "mrp": 50.0, "boxRate": 480.0}]},
-      {"cat": "BALLS & CASSATA & GUDB
+      {"cat": "BALLS & CASSATA & GUDBUD", "items": [{"name": "V
