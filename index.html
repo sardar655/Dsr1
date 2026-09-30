@@ -62,7 +62,7 @@
     </div>
     <div class="mt-3 pt-2 border-t border-white/20 flex justify-between items-center text-[11px] px-1">
       <span class="font-extrabold text-yellow-300 uppercase tracking-wider">Shaik Enterprises</span>
-      <span class="bg-emerald-500/35 border border-emerald-400/40 text-emerald-200 px-2.5 py-0.5 rounded-full font-bold text-[10px]" id="headerBeat">Adoni Beat 1</span>
+      <span class="bg-emerald-500/35 border border-emerald-400/40 text-emerald-200 px-2.5 py-0.5 rounded-full font-bold text-[10px]">Adoni Beat 1</span>
     </div>
   </div>
 
@@ -73,7 +73,7 @@
         <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
         <span class="text-xs font-black text-slate-700 uppercase tracking-wide">Field Officer Attendance</span>
       </div>
-      <span id="syncIndicator" class="text-[10px] text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+      <span class="text-[10px] text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
         <i class="fa-solid fa-cloud"></i> RSM Sync Ready
       </span>
     </div>
@@ -81,18 +81,8 @@
     <div class="bg-slate-50 border p-2.5 rounded-xl flex items-center justify-between text-xs">
       <div>
         <div class="text-[10px] text-slate-400 font-bold uppercase">Officer Name</div>
-        <select id="officerSelect" onchange="changeOfficer()" class="font-black text-blue-900 text-sm bg-transparent outline-none">
-          <option value="E Balakrishna">E Balakrishna</option>
-          <option value="Ramesh">Ramesh</option>
-          <option value="Suresh">Suresh</option>
-          <option value="Venkatesh">Venkatesh</option>
-          <option value="Mohammed">Mohammed</option>
-          <option value="Shiva">Shiva</option>
-          <option value="Kiran">Kiran</option>
-          <option value="Anand">Anand</option>
-          <option value="Raghavendra">Raghavendra</option>
-          <option value="Mahendra">Mahendra</option>
-        </select>
+        <input type="hidden" id="officerSelect" value="E Balakrishna">
+        <div class="font-black text-blue-900 text-sm">E Balakrishna <span class="text-slate-400 text-[10px]">(Beat 1)</span></div>
       </div>
       <div class="text-right">
         <div class="text-[10px] text-slate-400 font-bold uppercase">Duty Status</div>
@@ -100,33 +90,34 @@
       </div>
     </div>
 
-    <!-- Selfie Capture -->
-    <div class="border-2 border-dashed border-slate-300 rounded-2xl p-3 text-center bg-slate-50/50">
-      <input type="file" id="selfieInput" accept="image/*" capture="user" onchange="previewSelfie(event)" class="hidden">
-      <div id="selfiePlaceholder" onclick="playBeep(); triggerCamera()" class="cursor-pointer py-1">
+    <!-- Direct Working Clickable Camera / Gallery Area -->
+    <label for="selfieInput" class="border-2 border-dashed border-slate-300 hover:border-blue-500 rounded-2xl p-3 text-center bg-slate-50/50 block cursor-pointer active:bg-blue-50 transition">
+      <input type="file" id="selfieInput" accept="image/*" onchange="previewSelfie(event)" class="hidden">
+      <div id="selfiePlaceholder" class="py-1">
         <div class="w-10 h-10 mx-auto mb-1 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-lg shadow-sm">📸</div>
-        <p class="text-xs font-bold text-slate-700">Take Duty Selfie (Required)</p>
+        <p class="text-xs font-bold text-slate-700">Tap to Take Selfie (Optional)</p>
       </div>
-      <div id="selfiePreviewBox" class="hidden relative inline-block">
+      <div id="selfiePreviewBox" class="hidden">
         <img id="selfieImg" src="" alt="Selfie" class="w-20 h-20 object-cover rounded-xl border-2 border-emerald-500 mx-auto shadow">
-        <button onclick="playBeep(); triggerCamera()" class="absolute -bottom-2 -right-2 bg-blue-600 text-white text-[9px] px-2 py-0.5 rounded-full font-bold">Retake</button>
+        <span class="text-blue-600 text-[10px] font-bold block mt-1">Tap to Change</span>
       </div>
-    </div>
+    </label>
 
+    <!-- Punch Buttons -->
     <div class="grid grid-cols-2 gap-2 pt-1">
-      <button id="punchInBtn" onclick="playSuccessSound(); handlePunch('IN')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl text-xs shadow transition active:scale-95">📍 Punch IN (Start)</button>
-      <button id="punchOutBtn" onclick="playSuccessSound(); handlePunch('OUT')" disabled class="bg-slate-300 text-slate-500 font-bold py-2.5 rounded-xl text-xs shadow transition">🏁 Punch OUT (End)</button>
+      <button id="punchInBtn" type="button" onclick="handlePunch('IN')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl text-xs shadow transition active:scale-95">📍 Punch IN (Start)</button>
+      <button id="punchOutBtn" type="button" onclick="handlePunch('OUT')" disabled class="bg-slate-300 text-slate-500 font-bold py-2.5 rounded-xl text-xs shadow transition">🏁 Punch OUT (End)</button>
     </div>
   </div>
 
-  <!-- LOCKED CONTAINER -->
+  <!-- LOCKED / UNLOCKED APP CONTAINER -->
   <div id="lockedAppContainer" class="opacity-30 pointer-events-none transition-all duration-300 space-y-4">
 
     <!-- 2. PERFORMANCE & TARGETS -->
     <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 space-y-3">
       <div class="flex justify-between items-center border-b pb-2">
         <span class="text-xs font-bold text-slate-500 uppercase tracking-wide">Today's Sales Performance</span>
-        <button onclick="playBeep(); resetDayData()" class="text-[11px] text-red-600 font-semibold underline">Reset Day</button>
+        <button onclick="resetDayData()" class="text-[11px] text-red-600 font-semibold underline">Reset Day</button>
       </div>
       
       <div class="grid grid-cols-4 gap-1.5 text-center">
@@ -147,38 +138,14 @@
           <div id="statSales" class="text-xs font-black text-amber-900 mt-1">0</div>
         </div>
       </div>
-
-      <!-- Target Bar -->
-      <div class="bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200 p-3 rounded-xl space-y-2">
-        <div class="flex justify-between items-center">
-          <div>
-            <div class="font-black text-indigo-900 text-xs uppercase">🎯 Monthly Sales Target</div>
-            <div class="text-[11px] text-slate-600">Target: ₹2L = ₹1k Bonus</div>
-          </div>
-          <div class="text-right">
-            <div class="text-[10px] text-slate-500 font-bold uppercase">Bonus Earned</div>
-            <div class="font-black text-emerald-700 text-base">₹<span id="monthlyIncentiveTotal">0</span></div>
-          </div>
-        </div>
-        
-        <div>
-          <div class="flex justify-between text-[10px] font-bold text-slate-600 mb-1">
-            <span>Total: ₹<span id="monthlySalesVal">0</span></span>
-            <span id="targetPercent">0%</span>
-          </div>
-          <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
-            <div id="targetProgressBar" class="bg-indigo-600 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
-          </div>
-        </div>
-      </div>
     </div>
 
-    <!-- 3. OUTLET & FREEZER AUDIT -->
+    <!-- 3. OUTLET & VISIT STATUS -->
     <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 space-y-3">
       <div class="flex justify-between items-center border-b pb-2">
-        <span class="text-xs font-black text-slate-700 uppercase tracking-wide">Outlet & Freezer Audit</span>
-        <button type="button" onclick="playBeep(); openNewOutletPrompt()" class="text-[11px] font-bold text-blue-600 bg-blue-50 border border-blue-200 px-3 py-1 rounded-lg">
-          + Add New Shop
+        <span class="text-xs font-black text-slate-700 uppercase tracking-wide">Outlet & Audit</span>
+        <button type="button" onclick="openNewOutletPrompt()" class="text-[11px] font-bold text-blue-600 bg-blue-50 border border-blue-200 px-3 py-1 rounded-lg">
+          + New Shop
         </button>
       </div>
 
@@ -191,24 +158,12 @@
           <span class="font-bold text-slate-700">GPS:</span>
           <span id="gpsStatusText" class="text-slate-500 font-mono text-[10px]">Locking GPS...</span>
         </div>
-        <button type="button" onclick="playBeep(); refreshGPSLocation()" class="text-[10px] font-bold text-blue-700 bg-blue-100 px-2.5 py-1 rounded-lg">Refresh</button>
+        <button type="button" onclick="refreshGPSLocation()" class="text-[10px] font-bold text-blue-700 bg-blue-100 px-2.5 py-1 rounded-lg">Refresh</button>
       </div>
 
       <div>
         <label class="text-[11px] font-bold text-slate-600 uppercase">Outlet / Shop Name</label>
-        <div class="flex gap-2 mt-1">
-          <select id="outletDropdown" onchange="onSelectSavedOutlet()" class="w-full border p-2.5 rounded-xl text-xs bg-slate-50 font-semibold outline-none">
-            <option value="">-- Choose From Saved Outlets --</option>
-            <option value="Balaji General Store">Balaji General Store</option>
-            <option value="Sri Venkateshwara Kirana">Sri Venkateshwara Kirana</option>
-            <option value="Adoni Fresh Point">Adoni Fresh Point</option>
-            <option value="New Royal Bakery">New Royal Bakery</option>
-          </select>
-        </div>
-      </div>
-
-      <div id="manualShopBox" class="mt-2">
-        <input type="text" id="customShopName" placeholder="Or enter manual shop name..." class="w-full border p-2.5 rounded-xl text-xs bg-white outline-none">
+        <input type="text" id="customShopName" placeholder="Enter shop name..." class="w-full border p-2.5 rounded-xl text-xs bg-slate-50 font-semibold mt-1 outline-none">
       </div>
 
       <div>
@@ -240,7 +195,7 @@
       </div>
     </div>
 
-    <!-- 4. PRODUCTS CATALOG & BILLING -->
+    <!-- 4. PRODUCTS & BILLING -->
     <div id="orderBookingSection" class="space-y-3">
       <div class="sticky top-2 z-10 space-y-1.5 bg-slate-50 pb-1">
         <input id="searchInput" type="text" oninput="filterProducts()" placeholder="🔍 Search ice cream flavour..." 
@@ -295,30 +250,6 @@
     // SHEETDB API CONFIGURATION
     const SHEETDB_URL = "https://sheetdb.io/api/v1/pfa3wfno58xy9?sheet=Live_Sales_Log";
 
-    // AUDIO SOUND EFFECTS
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    function playBeep() {
-      try {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.connect(gain); gain.connect(audioCtx.destination);
-        osc.frequency.value = 800; gain.gain.value = 0.05;
-        osc.start(); osc.stop(audioCtx.currentTime + 0.08);
-      } catch(e) {}
-    }
-    function playSuccessSound() {
-      try {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.connect(gain); gain.connect(audioCtx.destination);
-        osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
-        osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1);
-        gain.gain.value = 0.08;
-        osc.start(); osc.stop(audioCtx.currentTime + 0.25);
-      } catch(e) {}
-    }
-
-    // PRODUCTS CATALOG (Top Popular Variants)
     const products = [
       { id: 1, name: "Vanilla Cup 50ml", mrp: 10, rate: 8, boxUnits: 40 },
       { id: 2, name: "Strawberry Cup 50ml", mrp: 10, rate: 8, boxUnits: 40 },
@@ -344,5 +275,83 @@
     window.addEventListener('DOMContentLoaded', () => {
       renderProducts(products);
       refreshGPSLocation();
+    });
 
-      // S
+    function refreshGPSLocation() {
+      const gpsTxt = document.getElementById('gpsStatusText');
+      gpsTxt.innerText = "Locating...";
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          pos => {
+            liveGPS = `${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}`;
+            gpsTxt.innerText = liveGPS;
+          },
+          err => {
+            liveGPS = "15.63, 77.27";
+            gpsTxt.innerText = "15.63, 77.27 (Adoni)";
+          }
+        );
+      } else {
+        liveGPS = "15.63, 77.27";
+        gpsTxt.innerText = "15.63, 77.27";
+      }
+    }
+
+    function previewSelfie(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('selfieImg').src = e.target.result;
+          document.getElementById('selfiePlaceholder').classList.add('hidden');
+          document.getElementById('selfiePreviewBox').classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function handlePunch(type) {
+      if (type === 'IN') {
+        dutyActive = true;
+        document.getElementById('dutyBadge').innerText = "DUTY ACTIVE";
+        document.getElementById('dutyBadge').className = "font-bold text-emerald-600";
+        document.getElementById('lockedAppContainer').classList.remove('opacity-30', 'pointer-events-none');
+        document.getElementById('punchInBtn').disabled = true;
+        document.getElementById('punchInBtn').classList.add('opacity-50');
+        document.getElementById('punchOutBtn').disabled = false;
+        document.getElementById('punchOutBtn').className = "bg-rose-600 hover:bg-rose-700 text-white font-bold py-2.5 rounded-xl text-xs shadow transition active:scale-95";
+      } else {
+        dutyActive = false;
+        document.getElementById('dutyBadge').innerText = "DUTY ENDED";
+        document.getElementById('dutyBadge').className = "font-bold text-slate-500";
+        document.getElementById('lockedAppContainer').classList.add('opacity-30', 'pointer-events-none');
+        document.getElementById('punchOutBtn').disabled = true;
+        document.getElementById('punchInBtn').disabled = false;
+        document.getElementById('punchInBtn').classList.remove('opacity-50');
+      }
+    }
+
+    function openNewOutletPrompt() {
+      const name = prompt("Enter New Shop / Outlet Name:");
+      if (name) {
+        document.getElementById('customShopName').value = name;
+      }
+    }
+
+    function toggleOrderSection(isOrder) {
+      if (isOrder) {
+        document.getElementById('orderBookingSection').classList.remove('hidden');
+        document.getElementById('noOrderReasonBox').classList.add('hidden');
+      } else {
+        document.getElementById('orderBookingSection').classList.add('hidden');
+        document.getElementById('noOrderReasonBox').classList.remove('hidden');
+      }
+    }
+
+    function renderProducts(list) {
+      const container = document.getElementById('productList');
+      container.innerHTML = list.map(p => `
+        <div class="pt-2 flex items-center justify-between">
+          <div class="flex-1 pr-2">
+            <h4 class="font-bold text-xs text-slate-900">${p.name}</h4>
+            <div class="text-[10px] text-slate-500">Rate: ₹${p.rate} | Box: ${p.boxUnits} pcs</di
